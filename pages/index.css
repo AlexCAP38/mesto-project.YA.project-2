@@ -1,3 +1,9 @@
 @import url(../vendor/normalize.css);
 @import url(../vendor/fonts.css);
 @import url(../blocks/root/root.css);
+
+@import url(../blocks/logo-box/logo-box.css);
+@import url(../blocks/logo-box/__logo-img/logo-box__logo-img.css);
+
+@import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);

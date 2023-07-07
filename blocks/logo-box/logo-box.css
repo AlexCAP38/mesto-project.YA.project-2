@@ -1,0 +1,10 @@
+.logo-box {
+  border-bottom: 1px solid #545454;
+}
+
+@media screen and (max-width: 320px) {
+  .logo-box {
+    margin-top: 28px;
+    min-height: 56px;
+  }
+}

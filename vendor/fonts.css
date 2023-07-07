@@ -7,6 +7,15 @@
     url(../fonts/Inter-Regular.woff2) format('woff2');
 }
 
+/* 500 - Medium*/
+@font-face {
+  font-family: 'Inter';
+  font-weight: 500;
+  font-display: swap;
+  src: url(../fonts/Inter-Medium.woff) format('woff'),
+    url(../fonts/Inter-Bold.woff2) format('woff2');
+}
+
 /* 700 - Bold*/
 @font-face {
   font-family: 'Inter';
@@ -24,7 +33,3 @@
   src: url(../fonts/Inter-Black.woff) format('woff'),
     url(../fonts/Inter-Black.woff2) format('woff2');
 }
-
-/* 500 - Medium*/
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
