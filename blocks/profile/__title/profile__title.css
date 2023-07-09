@@ -1,3 +1,9 @@
-.profile__title {
+.profile__title {}
 
+@media screen and (max-width: 320px) {
+    .profile__title {
+        font-size: 27px;
+        font-weight: 500;
+        margin: 26px 0 0;
+    }
 }
