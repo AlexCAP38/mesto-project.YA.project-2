@@ -1,4 +1,6 @@
 .popup__subtitle {
+  min-width: 355px;
+  
   font-size: 14px;
   line-height: 31px;
 
@@ -6,5 +8,5 @@
   border: 0;
   border-bottom: 1px solid rgba(000, 000, 000, .2);
 
-  margin-top: 22px;
+  margin: 22px auto 0;
 }
