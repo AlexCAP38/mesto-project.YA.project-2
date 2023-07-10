@@ -1,0 +1,21 @@
+.places__like-icon {
+  background-image: url(../../../images/like-icon.svg);
+  background-repeat: no-repeat;
+  min-width: 22px;
+  min-height: 19px;
+  display: inline-block;
+}
+
+@media screen and (max-width: 320px) {
+  .places__like-icon {
+    background-image: url(../../../images/like-icon.svg);
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 19px;
+  }
+}
+
+.places__like-icon:hover {
+  opacity: .6;
+  cursor: pointer;
+}
