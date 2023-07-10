@@ -1,9 +1,23 @@
 .popup__close {
-    width: 32px;
-    height: 32px;
+  width: 32px;
+  height: 32px;
 
-    background-image: url(../../../images/close-icon.svg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    grid-column: 2/3;    
+  background-image: url(../../../images/close-icon.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  grid-column: 2/3;
+}
+
+@media screen and (max-width: 700px) {
+  .popup__close {
+    grid-column: 1/2;
+    justify-self: end;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.popup__close:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
