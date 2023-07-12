@@ -1,6 +1,9 @@
 .places__like-icon {
   background-image: url(../../../images/like-icon.svg);
   background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  
   min-width: 22px;
   min-height: 19px;
   display: inline-block;
@@ -8,8 +11,6 @@
 
 @media screen and (max-width: 320px) {
   .places__like-icon {
-    background-image: url(../../../images/like-icon.svg);
-    background-repeat: no-repeat;
     width: 22px;
     height: 19px;
   }
@@ -18,9 +19,4 @@
 .places__like-icon:hover {
   opacity: .6;
   cursor: pointer;
-}
-
-.places__like-icon_active {
-  background-image: url(../../../images/like-icon_active.svg);
-  background-repeat: no-repeat;
 }

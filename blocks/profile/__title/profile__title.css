@@ -1,4 +1,5 @@
 .profile__title {
+  max-width: 294px;
   display: inline-block;
 
   font-size: 42px;

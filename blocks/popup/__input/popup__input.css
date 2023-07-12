@@ -1,6 +1,5 @@
-.popup__subtitle {
+.popup__input {
   min-width: 355px;
-
   font-size: 14px;
   line-height: 31px;
 
@@ -8,11 +7,15 @@
   border: 0;
   border-bottom: 1px solid rgba(000, 000, 000, .2);
 
+  margin: 42px auto 0;
+}
+
+.popup__input:last-of-type {
   margin: 22px auto 0;
 }
 
 @media screen and (max-width: 700px) {
-  .popup__subtitle {
+  .popup__input {
     min-width: 238px;
   }
 }
