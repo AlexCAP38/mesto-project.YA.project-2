@@ -8,13 +8,20 @@
   background-color: rgba(0, 0, 0, 0);
   background-size: cover;
   border: 0;
-
-  margin: 38px 0 11px 13px;
+  padding: 0;
+  margin: 15px 0 0 15px;
 }
+
+@media screen and (max-width:410px) {
+  .profile__edit-button {
+    margin: 2px 0 0 15px;
+  }
+}
+
 
 @media screen and (max-width:320px) {
   .profile__edit-button {
-    margin: 0 0 6px 7px;
+    margin: 7px 0 0 5px;
     width: 18px;
     height: 18px;
   }

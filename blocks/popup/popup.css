@@ -10,7 +10,7 @@
 
   grid-template-columns: 430px max-content;
   grid-template-rows: max-content;
-  row-gap: 6px;
+  row-gap: 8px;
 
   align-content: center;
   justify-content: center;

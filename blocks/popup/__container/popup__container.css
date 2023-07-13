@@ -11,3 +11,9 @@
     width: 100%;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .popup__container {
+    padding-top: 0;
+  }
+}

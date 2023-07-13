@@ -19,3 +19,9 @@
     min-width: 238px;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .popup__input {
+    margin: 70px auto 0;
+  }
+}
