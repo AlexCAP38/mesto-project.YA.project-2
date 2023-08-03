@@ -3,12 +3,11 @@
   height: 100%;
   display: none;
   background-color: rgba(0, 0, 0, 0.5);
-
   position: fixed;
   left: 0;
   top: 0;
 
-  grid-template-columns: 430px max-content;
+  /* grid-template-columns: 430px max-content; */
   grid-template-rows: max-content;
   row-gap: 8px;
 

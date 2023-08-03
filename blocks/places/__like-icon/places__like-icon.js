@@ -1,12 +1,16 @@
+likeIcon();
+
+function likeIcon() {
+//ищем все классы записываем в массив
 const placesLikeIcon = document.querySelectorAll('.places__like-icon');
 
+//форичем перебераем массив на его парамент навешиваем слушатель
 placesLikeIcon.forEach((item) => {
-  item.addEventListener('click', changeLikeIcon);
+  item.addEventListener('click', function (event) {
 
-//пока не знаю как паписать сокращеную форму, вываливается ошибка по синтаксису. надо гуглить
-  function changeLikeIcon() {
-    item.classList.toggle('places__like-icon_active');
-  }
-})
+    // дальше через объкт евент и таргет удаляем/ ставил класс
+    event.target.classList.toggle('places__like-icon_active');
+  });
+});
 
-
+}
