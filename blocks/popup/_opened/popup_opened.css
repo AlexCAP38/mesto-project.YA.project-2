@@ -1,14 +1,23 @@
 .popup_opened {
   display: grid;
+
+  animation: poppup-animation_open .6s;
+
 }
 
-/* animation: poppup-animation_open .6s;
+.popup_close1 {
+  animation: poppup-animation_close .6s;
+  display:none;
+}
+
+/*
+  animation: poppup-animation_open .6s;
    animation: poppup-animation_close .6s;
 */
 
 @keyframes poppup-animation_open {
   from {
-    opacity: .5;
+    opacity: 0;
   }
 
   to {
