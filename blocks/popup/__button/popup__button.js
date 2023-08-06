@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 765e2e493197f46889ea392108cfd1802d3e4ec3
 const formElement = document.querySelector('.popup__form');
 
 const nameInput = document.querySelector('#popup__input-name');
@@ -24,6 +27,7 @@ profileSubtitle.textContent = jobInput.value;
 popup.classList.remove('popup_opened');
 }
 
+<<<<<<< HEAD
 =======
 //БЛОК сохранения и отправка формы "редактирования профиля"
 
@@ -48,3 +52,5 @@ formElement.addEventListener('submit', function formSubmitHandler(evt) {
 
 });
 >>>>>>> develop
+=======
+>>>>>>> 765e2e493197f46889ea392108cfd1802d3e4ec3
