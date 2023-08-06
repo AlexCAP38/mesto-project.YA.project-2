@@ -1,8 +1,19 @@
-//закрытие модального окна
-const buttonClose = document.querySelector('.popup__close');
+//Блок закрытие модалки через батон клосе
+const buttonClose = document.querySelectorAll('.popup__close');
 
-buttonClose.addEventListener('click', popupClose);
 
-function popupClose() {
-  popup.classList.remove('popup_opened');
-}
+//перебираем пмассив
+buttonClose.forEach((item) => {
+
+  //навешиваем на текущий элемент слушатель
+  item.addEventListener('click', function (event) {
+    event.target.parentElement.classList.add('popup__close_animation');
+
+
+//Условие. если поппап для редактирования профиля то значения не сохраняем
+    if (item.parentElement.id === "edit-profile"){
+      popupInputName.value= profileTitle.textContent;
+      popupInputAbout.value= profileSubtitle.textContent;
+    }
+  });
+});

@@ -21,6 +21,7 @@
 @import url(../blocks/places/__title/places__title.css);
 @import url(../blocks/places/__like-icon/places__like-icon.css);
 @import url(../blocks/places/__like-icon/_active/places__like-icon_active.css);
+@import url(../blocks/places/__trash-icon/places__trash-icon.css);
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__title/footer__title.css);
@@ -33,5 +34,13 @@
 @import url(../blocks/popup/__button/popup__button.css);
 @import url(../blocks/popup/__close/popup__close.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/popup/__image/popup__image.css);
+@import url(../blocks/popup/_width/popup_width.css);
+@import url(../blocks/popup/__container/_input/popup__container_input.css);
+@import url(../blocks/popup/__title/popup_title.css);
+@import url(../blocks/popup/__close/_animation/popup__close_animation.css);
+@import url(../blocks/popup/__form-caption/_media-screen/popup__form-caption_media-screen.css);
+@import url(../blocks/popup/__container/_media-screen/popup__container_media-screen.css);
+@import url(../blocks/popup/__input/_media-screen/popup__input_media-screen.css);
 
 @import url(../blocks/frame/frame.css);

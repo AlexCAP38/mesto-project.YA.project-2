@@ -3,4 +3,9 @@
   background-color: #fff;
   color: #000;
   overflow: hidden;
+  position: relative;
+}
+
+.places__card:hover {
+  cursor: pointer;
 }

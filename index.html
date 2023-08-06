@@ -33,14 +33,20 @@
 
       <section class="places">
         <div class="places__card">
+          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
           <img class="places__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
           <div class="places__container">
             <h2 class="places__title">Карачаевск</h2>
+<<<<<<< HEAD
             <button type="button" class="places__like-icon"
               aria-label="Лайкнуть карточку"></button>
+=======
+            <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
+>>>>>>> develop
           </div>
         </div>
         <div class="places__card">
+          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
           <img class="places__image" src="./images/elbrus.png" alt="Гора Эльбрус">
           <div class="places__container">
             <h2 class="places__title">Гора Эльбрус</h2>
@@ -48,6 +54,7 @@
           </div>
         </div>
         <div class="places__card">
+          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
           <img class="places__image" src="./images/dombay.jpg" alt="Домбай">
           <div class="places__container">
             <h2 class="places__title">Домбай</h2>
@@ -55,6 +62,7 @@
           </div>
         </div>
         <div class="places__card">
+          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
           <img class="places__image" src="./images/elbrus.png" alt="Гора Эльбрус">
           <div class="places__container">
             <h2 class="places__title">Гора Эльбрус</h2>
@@ -62,6 +70,7 @@
           </div>
         </div>
         <div class="places__card">
+          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
           <img class="places__image" src="./images/dombay.jpg" alt="Домбай">
           <div class="places__container">
             <h2 class="places__title">Домбай</h2>
@@ -69,6 +78,7 @@
           </div>
         </div>
         <div class="places__card">
+          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
           <img class="places__image" src="./images/karachaevsk.jpg" alt="Карачаево-Черкесская республика">
           <div class="places__container">
             <h2 class="places__title">Карачаево-Черкесская республика</h2>
@@ -83,9 +93,10 @@
     </footer>
   </div>
 
-  <div class="popup">
+  <!-- модальное окно для редактирования профиля -->
+  <div class="popup" id="edit-profile">
     <button type="button" class="popup__close" aria-label="Закрыть форму редактирования профиля."></button>
-    <div class="popup__container">
+    <div class="popup__container popup__container_input">
       <form class="popup__form" action="#" id="popup__form" name="popup__form" method="post">
         <h2 class="popup__form-caption">Редактировать профиль</h2>
         <input class="popup__input" type="text" id="popup__input-name" name="popup__input-name" placeholder="Имя">
@@ -93,8 +104,8 @@
         <button class="popup__button" type="submit" aria-label="Сохранить отредактированную форму профиля.">Сохранить</button>
       </form>
     </div>
-
   </div>
+<<<<<<< HEAD
 <script src="./blocks/profile/__edit-button/profile__edit-button.js"></script>
 <script src="./blocks/popup/__close/popup__close.js"></script>
 <script src="./blocks/popup/__button/popup__button.js"></script>
@@ -102,6 +113,56 @@
 <script src=""></script>
 <script src=""></script>
 <script src="./script.js"></script>
+=======
+
+  <!-- модальное окно для добавления новой карточки  -->
+  <div class="popup" id="popup-new-card">
+    <button type="button" class="popup__close" aria-label="Закрыть форму редактирования профиля."></button>
+    <div class="popup__container popup__container_input popup__container_media-screen">
+      <form class="popup__form" action="#" id="popup__form-new-card" name="popup__form" method="post">
+        <h2 class="popup__form-caption popup__form-caption_media-screen">Новое место</h2>
+        <input class="popup__input popup__input_media-screen" type="text" id="popup__input-name" name="popup__input-name" placeholder="Название">
+        <input class="popup__input" type="text" id="popup__input-link" name="popup__input-link"
+          placeholder="Ссылка на картинку">
+        <button class="popup__button" type="submit"
+          aria-label="Добавить новую карточку">Создать</button>
+      </form>
+    </div>
+  </div>
+
+<!-- модальное окно для просмотра картинок -->
+<div class="popup popup_width" id='popup-viewer'>
+  <button type="button" class="popup__close" aria-label="Закрыть изображение."></button>
+  <div class="popup__container">
+    <img src="" alt="" class="popup__image">
+    <h1 class="popup__title"></h1>
+  </div>
+</div>
+
+
+  <!-- Темплейт для новых карточек -->
+  <template id="template-places__card">
+    <div class="places__card">
+      <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
+      <img class="places__image" src="" alt="">
+      <div class="places__container">
+        <h2 class="places__title"></h2>
+        <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
+      </div>
+  </template>
+
+  <script src="./blocks/profile/__edit-button/profile__edit-button.js"></script>
+  <script src="./blocks/profile/__add-button/profile__add-button.js"></script>
+
+  <script src="./blocks/popup/__close/popup__close.js"></script>
+  <script src="./blocks/popup/__button/popup__button.js"></script>
+
+  <script src="./blocks/places/__like-icon/places__like-icon.js"></script>
+  <script src="./blocks/places/__card/places__card-array.js"></script>
+  <script src="./blocks/places/__card/places__card.js"></script>
+  <script src="./blocks/places/__trash-icon/places__trash-icon.js"></script>
+
+>>>>>>> develop
 </body>
 
 </html>
