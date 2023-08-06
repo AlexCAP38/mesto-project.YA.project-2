@@ -89,7 +89,7 @@
   </div>
 
   <!-- модальное окно для редактирования профиля -->
-  <div class="popup popup_width">
+  <div class="popup" id="edit-profile">
     <button type="button" class="popup__close" aria-label="Закрыть форму редактирования профиля."></button>
     <div class="popup__container popup__container_input">
       <form class="popup__form" action="#" id="popup__form" name="popup__form" method="post">
@@ -103,22 +103,22 @@
   </div>
 
   <!-- модальное окно для добавления новой карточки  -->
-  <div class="popup popup_width">
+  <div class="popup" id="popup-new-card">
     <button type="button" class="popup__close" aria-label="Закрыть форму редактирования профиля."></button>
-    <div class="popup__container popup__container_input">
+    <div class="popup__container popup__container_input popup__container_media-screen">
       <form class="popup__form" action="#" id="popup__form-new-card" name="popup__form" method="post">
-        <h2 class="popup__form-caption">Новое место</h2>
-        <input class="popup__input" type="text" id="popup__input-name" name="popup__input-name" placeholder="Название">
+        <h2 class="popup__form-caption popup__form-caption_media-screen">Новое место</h2>
+        <input class="popup__input popup__input_media-screen" type="text" id="popup__input-name" name="popup__input-name" placeholder="Название">
         <input class="popup__input" type="text" id="popup__input-link" name="popup__input-link"
           placeholder="Ссылка на картинку">
         <button class="popup__button" type="submit"
-          aria-label="Сохранить отредактированную форму профиля.">Создать</button>
+          aria-label="Добавить новую карточку">Создать</button>
       </form>
     </div>
   </div>
 
 <!-- модальное окно для просмотра картинок -->
-<div class="popup" id='popup-viewer'>
+<div class="popup popup_width" id='popup-viewer'>
   <button type="button" class="popup__close" aria-label="Закрыть изображение."></button>
   <div class="popup__container">
     <img src="" alt="" class="popup__image">
@@ -139,12 +139,16 @@
   </template>
 
   <script src="./blocks/profile/__edit-button/profile__edit-button.js"></script>
+  <script src="./blocks/profile/__add-button/profile__add-button.js"></script>
+
   <script src="./blocks/popup/__close/popup__close.js"></script>
   <script src="./blocks/popup/__button/popup__button.js"></script>
+
   <script src="./blocks/places/__like-icon/places__like-icon.js"></script>
+  <script src="./blocks/places/__card/places__card-array.js"></script>
   <script src="./blocks/places/__card/places__card.js"></script>
-  <script src="./blocks/profile/__add-button/profile__add-button.js"></script>
   <script src="./blocks/places/__trash-icon/places__trash-icon.js"></script>
+
 </body>
 
 </html>

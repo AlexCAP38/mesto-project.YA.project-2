@@ -1,16 +1,12 @@
 likeIcon();
 
 function likeIcon() {
-//ищем все классы записываем в массив
-const placesLikeIcon = document.querySelectorAll('.places__like-icon');
+  const placesLikeIcon = document.querySelectorAll('.places__like-icon');   //ищем все классы записываем в массив
 
-//форичем перебераем массив на его парамент навешиваем слушатель
-placesLikeIcon.forEach((item) => {
-  item.addEventListener('click', function (event) {
-
-    // дальше через объкт евент и таргет удаляем/ ставил класс
-    event.target.classList.toggle('places__like-icon_active');
+  placesLikeIcon.forEach((item) => {    //форичем перебераем массив, выбираем текущий элемент
+    item.addEventListener('click', function (event) { //на этот элемент навешиваем слушатель
+      event.target.classList.toggle('places__like-icon_active');  //через объект евент и таргет удаляем/ ставил класс
+    });
   });
-});
 
-}
+};

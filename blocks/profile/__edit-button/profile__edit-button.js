@@ -1,28 +1,24 @@
-//Блок открыие модального окна
+//БЛОК модальное окно "редактирования профиля"
 
-//находим элементы в доме
-const profileEditButton = document.querySelector('.profile__edit-button');
-const popup = document.querySelectorAll('.popup');
+const profileEditButton = document.querySelector('.profile__edit-button');  //находим кнопку в доме
+const popupEditprofile = document.querySelector('#edit-profile'); //находим форму "редактирования профиля" в доме
 
-//слушаем событие
-profileEditButton.addEventListener('click', popupOpened);
+const profileTitle = document.querySelector('.profile__title'); //находим элементы на страиницы чтобы их подставить
+const profileSubtitle = document.querySelector('.profile__subtitle'); //в поля ввода в попапе
 
-//действие при событие
-function popupOpened() {
+const popupInputName = document.querySelector('#popup__input-name');  // находим инпуты для текущего модального окна
+const popupInputAbout = document.querySelector('#popup__input-about');
 
-  //условие читаем сласс если там нету такого имени, добавим его. модальное окно откроется
-  if (popup[0].classList.contains('popup_opened') !== true) {
-    popup[0].classList.toggle('popup_opened');
 
-    //подставляем в поля ввода даный из title и subtitle
-    const profileTitle = document.querySelector('.profile__title');
-    const profileSubtitle = document.querySelector('.profile__subtitle');
 
-    const popupInputName = document.querySelector('#popup__input-name');
-    const popupInputAbout = document.querySelector('#popup__input-about');
+//отслеживаем событие по клику, создаем функцию
+profileEditButton.addEventListener('click', function () {
 
-    //создаем атрибут валуе присваиваем туда значение из контекста на странице
-    popupInputName.setAttribute('value', profileTitle.textContent);
-    popupInputAbout.setAttribute('value', profileSubtitle.textContent);
-  }
-}
+  popupEditprofile.classList.remove('popup__close_animation'); //удаляем анимацией для закрытиея попапа
+  popupEditprofile.classList.add('popup_opened'); //открываем попап для редактирования профиля
+
+  //устанавливаем атрибут валуе присваиваем туда значение из контекста страницы
+  popupInputName.setAttribute('value', profileTitle.textContent);
+  popupInputAbout.setAttribute('value', profileSubtitle.textContent);
+
+});
