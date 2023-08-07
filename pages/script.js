@@ -60,7 +60,6 @@ formNewcard.addEventListener('submit', function formSubmitHandler(evt) {  //со
   deleteCard();  //функция обрабатывает события для удаление новых карточек
 
   showImage();  //функция обрабатывает события открытия просмоторщика
-
 });
 
 //будем добавлять новую карточку из темплейта
@@ -123,7 +122,6 @@ formElement.addEventListener('submit', function formSubmitHandler(evt) {
   profileTitle.textContent = nameInput.value;
   profileSubtitle.textContent = jobInput.value;
 
-  // popupEditprofile.classList.add('popup__close_animation'); //анимация плавное закрытие попапа
   popupEditprofile.classList.remove('popup_opened');  //закрываем попап
 });
 
@@ -171,7 +169,6 @@ for (let i = 0; i < placesCard.length; i++) {
 //Добавляем карточки из массива
 for (let i = 0; i < initialCards.length; i++) {
   addCard(initialCards[i].name, initialCards[i].link);
-  likeCard();   //функция обрабатывает события лайков
 }
 
 //Блок открытие модального окна для просмотра изображений
@@ -212,6 +209,7 @@ function showImage() {
 deleteCard();
 
 function deleteCard() {
+
   //ищем все классы записываем в массив
   const trashLikeIcon = document.querySelectorAll('.places__trash-icon');
 
@@ -232,11 +230,16 @@ function deleteCard() {
 likeCard();
 
 function likeCard() {
+
   const placesLikeIcon = document.querySelectorAll('.places__like-icon');   //ищем все классы записываем в массив
 
-  placesLikeIcon.forEach(item => {    //форичем перебераем нодлист, выбираем текущий элемент
-    item.addEventListener('click', (event) => { //на этот элемент навешиваем слушатель
+  placesLikeIcon.forEach((item) => {    //форичем перебераем нодлист, выбираем текущий элемент
+
+    item.addEventListener('click', function (event) { //на этот элемент навешиваем слушатель
+
       event.target.classList.toggle('places__like-icon_active');  //через объект евент и таргет удаляем/ ставил класс
+
     });
   });
-}
+};
+
