@@ -1,36 +1,6 @@
 .popup_opened {
   display: grid;
-
-  animation: poppup-animation_open .6s;
-
-}
-
-.popup_close1 {
-  animation: poppup-animation_close .6s;
-  display:none;
-}
-
-/*
-  animation: poppup-animation_open .6s;
-   animation: poppup-animation_close .6s;
-*/
-
-@keyframes poppup-animation_open {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes poppup-animation_close {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
+  opacity: 1;
+  visibility: visible;
+  transition: all .6s;
 }
