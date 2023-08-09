@@ -32,54 +32,6 @@
       </section>
 
       <section class="places">
-        <div class="places__card">
-          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
-          <img class="places__image" src="./images/karachaevsk.jpg" alt="Карачаевск">
-          <div class="places__container">
-            <h2 class="places__title">Карачаевск</h2>
-            <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
-          </div>
-        </div>
-        <div class="places__card">
-          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
-          <img class="places__image" src="./images/elbrus.png" alt="Гора Эльбрус">
-          <div class="places__container">
-            <h2 class="places__title">Гора Эльбрус</h2>
-            <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
-          </div>
-        </div>
-        <div class="places__card">
-          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
-          <img class="places__image" src="./images/dombay.jpg" alt="Домбай">
-          <div class="places__container">
-            <h2 class="places__title">Домбай</h2>
-            <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
-          </div>
-        </div>
-        <div class="places__card">
-          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
-          <img class="places__image" src="./images/elbrus.png" alt="Гора Эльбрус">
-          <div class="places__container">
-            <h2 class="places__title">Гора Эльбрус</h2>
-            <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
-          </div>
-        </div>
-        <div class="places__card">
-          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
-          <img class="places__image" src="./images/dombay.jpg" alt="Домбай">
-          <div class="places__container">
-            <h2 class="places__title">Домбай</h2>
-            <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
-          </div>
-        </div>
-        <div class="places__card">
-          <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
-          <img class="places__image" src="./images/karachaevsk.jpg" alt="Карачаево-Черкесская республика">
-          <div class="places__container">
-            <h2 class="places__title">Карачаево-Черкесская республика</h2>
-            <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
-          </div>
-        </div>
       </section>
     </main>
 
@@ -109,9 +61,9 @@
       <form class="popup__form" action="#" id="popup__form-new-card" name="popup__form" method="post">
         <h2 class="popup__form-caption popup__form-caption_media-screen">Новое место</h2>
         <input class="popup__input popup__input_media-screen" type="text" id="popup__input-name"
-          name="popup__input-name" placeholder="Название">
+          name="popup__input-name" placeholder="Название" required>
         <input class="popup__input" type="text" id="popup__input-link" name="popup__input-link"
-          placeholder="Ссылка на картинку">
+          placeholder="Ссылка на картинку" required>
         <button class="popup__button" type="submit" aria-label="Добавить новую карточку">Создать</button>
       </form>
     </div>
@@ -125,7 +77,6 @@
       <h1 class="popup__title"></h1>
     </div>
   </div>
-
 
   <!-- Темплейт для новых карточек -->
   <template id="template-places__card">
