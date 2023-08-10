@@ -56,12 +56,13 @@ const popupNewCard = document.querySelector('#popup-new-card'); //находим
 
 profileAddButton.addEventListener('click', function () {  //Открытие попапа при нажатие на кнопку
 
-  openPopup(popupNewCard); //открываем попап
+    openPopup(popupNewCard); //открываем попап
+    popupNewCard.querySelector('#popup__form-new-card').reset(); //очищаем форму
 
 });
 
 
-//наполения контентом попапа для добавления новой карточки
+//событие по нажатию на кнопку сохранить  и наполения контентом попапа для добавления новой карточки
 //===========================================================================================
 const formNewcard = document.querySelector('#popup__form-new-card');  //находим форму для добавления новых карточек
 
@@ -97,7 +98,7 @@ function createCard(nameImage, urlImage) {
 
   trashLikeIcon.addEventListener('click', function (event) {
     //берем текущий элемент ищем родителя и мочим его
-    trashLikeIcon.parentElement.remove();
+    trashLikeIcon.closest('div').remove();
   });
 
   //событие на установки и удаления "Лайка"
@@ -141,7 +142,7 @@ buttonClose.forEach((item) => {
       event.target.closest('.popup').querySelector(".popup__form").reset();
     }
   });
-  
+
 });
 
 //БЛОК сохранения и отправка формы "редактирования профиля"
