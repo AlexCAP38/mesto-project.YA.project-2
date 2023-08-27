@@ -1,3 +1,5 @@
+import './pages/index.css';
+
 const initialCards = [
   {
     name: 'Архыз',
@@ -236,7 +238,5 @@ function closePopup(popup) {
   //чтобы прослушивания события не занимала память удаляем ее
   document.removeEventListener('keydown', (event) => { });
   popup.removeEventListener('click', (event) => { });
-
-
 
 }

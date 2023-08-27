@@ -5,20 +5,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
-  <link rel="stylesheet" href="./pages/index.css">
+  <!-- <link rel="stylesheet" href="./pages/index.css"> -->
 </head>
 
 <body class="root">
 
   <div class="frame">
     <header class="header">
-      <img src="./images/logo.svg" alt="Логотип" class="header__img-logo">
+      <img src="<%=require('./images/logo.svg')%>" alt="Логотип" class="header__img-logo">
     </header>
 
     <main class="main-content">
 
       <section class="profile">
-        <img class="profile__avatar" src="./images/avatar.jpg" alt="Аватарка Жак-Ив Кусто">
+        <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватарка Жак-Ив Кусто">
 
         <div class="profile__container-out">
           <div class="profile__container-in">
@@ -89,7 +89,7 @@
       </div>
   </template>
 
-  <script src="./pages/script.js"></script>
+  <!-- <script src="./pages/script.js"></script> -->
 </body>
 
 </html>
