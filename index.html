@@ -61,8 +61,8 @@
       <form class="popup__form" action="#" id="popup__form-new-card" name="popup__form" method="post">
         <h2 class="popup__form-caption popup__form-caption_media-screen">Новое место</h2>
         <input class="popup__input popup__input_media-screen" type="text" id="popup__input-name"
-          name="popup__input-name" placeholder="Название" required>
-        <input class="popup__input" type="text" id="popup__input-link" name="popup__input-link"
+          name="popup__input-name" placeholder="Название" required minlength="2">
+        <input class="popup__input" type="url" id="popup__input-link" name="popup__input-link"
           placeholder="Ссылка на картинку" required>
         <button class="popup__button" type="submit" aria-label="Добавить новую карточку">Создать</button>
       </form>
