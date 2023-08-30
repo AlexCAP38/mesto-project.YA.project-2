@@ -240,3 +240,61 @@ function closePopup(popup) {
   popup.removeEventListener('click', (event) => { });
 
 }
+
+//===========================================================================================
+//Валидация форм, проверка на корректность ввода
+//===========================================================================================
+
+const profForm = document.querySelector('.popup__form');
+const inputElement = profForm.querySelector('.popup__input');
+const fieldErrorMessange = profForm.querySelector(`#${inputElement.id}-error`);
+
+
+
+inputElement.addEventListener('input', isValid);
+
+
+
+//функиця проверки состояния validity
+function isValid(evt) {
+  https://practicum.yandex.ru/learn/web-plus/courses/467b7164-c86d-4b1f-a89f-52f063a355b4/sprints/121366/topics/11997b4c-d767-4cac-b899-d9ed1fe9c7c6/lessons/e641ad29-f337-4d20-80e8-790918e40ec7/
+
+  //если состонияние валид false тогда будет выдавать сообщение об ошибке из validationMessage
+  if (!evt.target.validity.valid) {
+
+    showInputError(fieldErrorMessange, evt.target.validationMessage);
+
+  } else {
+
+    hidenInputError(fieldErrorMessange);
+
+  }
+
+}
+
+function showInputError(spanName, textErrorMessange) {
+  spanName.textContent = textErrorMessange;
+  spanName.classList.add('popup__errorMessange_active');
+}
+
+function hidenInputError(spanName) {
+  spanName.textContent = '....';
+  spanName.classList.remove('popup__errorMessange_active');
+}
+
+
+
+
+
+
+
+//===========================================================================================
+//вывод в консоль
+//===========================================================================================
+
+function mylog(log) {
+  console.log(log);
+}
+
+
+

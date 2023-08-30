@@ -44,11 +44,15 @@
   <div class="popup" id="edit-profile">
     <button type="button" class="popup__close" aria-label="Закрыть форму редактирования профиля."></button>
     <div class="popup__container popup__container_input">
-      <form class="popup__form" action="#" id="popup__form" name="popup__form" method="post">
+      <form class="popup__form" action="#" id="popup__form" name="popup__form" method="post" novalidate>
         <h2 class="popup__form-caption">Редактировать профиль</h2>
-        <input class="popup__input" type="text" id="popup__input-name" name="popup__input-name" placeholder="Имя">
-        <input class="popup__input" type="text" id="popup__input-about" name="popup__input-about" placeholder="О себе">
-        <button class="popup__button" type="submit"
+        <input class="popup__input" type="text" id="popup__input-name" name="popup__input-name" placeholder="Имя"
+          required minlength="2" maxlength="40" pattern="[A-Za-zА-Яа-яЁё\s\-]{1,40}">
+        <span class="popup__errorMessange" id="popup__input-name-error">Error.</span>
+        <input class=" popup__input" type="text" id="popup__input-about" name="popup__input-about" placeholder="О себе"
+          required minlength="2" maxlength="200" pattern="[A-Za-zА-Яа-яЁё\s\-]{1,200}">
+          <span class="popup__errorMessange"></span>
+        <button class="popup__button popup__button_active" type="submit"
           aria-label="Сохранить отредактированную форму профиля.">Сохранить</button>
       </form>
     </div>
@@ -61,7 +65,8 @@
       <form class="popup__form" action="#" id="popup__form-new-card" name="popup__form" method="post">
         <h2 class="popup__form-caption popup__form-caption_media-screen">Новое место</h2>
         <input class="popup__input popup__input_media-screen" type="text" id="popup__input-name"
-          name="popup__input-name" placeholder="Название" required minlength="2">
+          name="popup__input-name" placeholder="Название" required minlength="2" maxlength="30"
+          pattern="[A-Za-zА-Яа-яЁё\s\-]{1,30}">
         <input class="popup__input" type="url" id="popup__input-link" name="popup__input-link"
           placeholder="Ссылка на картинку" required>
         <button class="popup__button" type="submit" aria-label="Добавить новую карточку">Создать</button>

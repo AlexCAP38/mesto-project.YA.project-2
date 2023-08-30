@@ -1,0 +1,6 @@
+.popup__button_active {
+  background-color: #fff;
+  color: #cccccc;
+  border:1px solid #cccccc;
+  border-radius: 2px;
+}
