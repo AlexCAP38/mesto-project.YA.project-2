@@ -1,31 +1,7 @@
 import './pages/index.css';
+import { initialCards } from './components/array.js';
+import { closePopup, openPopup } from './components/modal.js';
 
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
 //===========================================================================================
 //БЛОК модальное окно "редактирования профиля"
@@ -39,14 +15,14 @@ const profileSubtitle = document.querySelector('.profile__subtitle'); //в по�
 const popupInputName = document.querySelector('#popup__input-name');  // находим input в модальном окне "ред.профиля"
 const popupInputAbout = document.querySelector('#popup__input-about');
 
+popupInputName.setAttribute('value', profileTitle.textContent); //устанавливаем инпутам атрибуты value присваиваем значение из контекста страницы
+popupInputAbout.setAttribute('value', profileSubtitle.textContent);
 
 //отслеживаем событие по нажатию на кнопку "редактирования профиля"
 profileEditButton.addEventListener('click', function () {
 
   openPopup(popupEditprofile); //открываем попап
 
-  popupInputName.setAttribute('value', profileTitle.textContent); //устанавливаем инпутам атрибуты value присваиваем значение из контекста страницы
-  popupInputAbout.setAttribute('value', profileSubtitle.textContent);
 });
 
 //===========================================================================================
@@ -197,72 +173,71 @@ function showImage(url, name) {
 
 };
 
-//Функция открытия попапа
-//when it is popap opening add event keydown
-//===========================================================================================
-
-function openPopup(popup) {
-  popup.classList.add('popup_opened'); //открываем попап
-
-  //Устанавливаем слушатель на весь документ. отслеживаем нажатие клавиш.
-  document.addEventListener('keydown', (event) => {
-
-    //Если нажата клавиша Escape, вызовим функция закрытия попапа
-    if (event.key === 'Escape') {
-      closePopup(popup);
-    }
-
-  });
-
-  //Устанавливаем слушатель на клик мыши на всю форму модального окна
-  popup.addEventListener('click', (event) => {
-
-    //Оверлей это наш весь попап если по нему щелнули тогда вызываем функцию закрывия окна
-    if (popup === event.target) {
-      closePopup(popup);
-    }
-
-  });
-
-
-
-
-}
-
-//Функция закрытия попапа попапа
-//===========================================================================================
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-
-  //чтобы прослушивания события не занимала память удаляем ее
-  document.removeEventListener('keydown', (event) => { });
-  popup.removeEventListener('click', (event) => { });
-
-}
 
 //===========================================================================================
 //Валидация форм, проверка на корректность ввода
 //===========================================================================================
 
-const profForm = document.querySelector('.popup__form');
-const inputElement = profForm.querySelector('.popup__input');
-const fieldErrorMessange = profForm.querySelector(`#${inputElement.id}-error`);
+enableValidation();
+
+//основаня функция проверки
+function enableValidation() {
+
+  //найдем все формы в доме, преобразуем в массив
+  const findAllForm = Array.from(document.querySelectorAll('.popup__form'));
+
+  //обходим все формы
+  findAllForm.forEach(function (form) {
+
+    //Функция поиска инпутов в форме
+    findInput(form);
+  });
+}
 
 
+//Ищет инпуты в форме
+function findInput(form) {
 
-inputElement.addEventListener('input', isValid);
+  //ищем инпуты в форме
+  const inputList = Array.from(form.querySelectorAll('.popup__input'));
+
+  //блокировка кнопки если поля инпута с ошибками
+  //нуходим кнопку в форме
+  const buttonElement = form.querySelector('.popup__button');
+
+  //Функцие передаем список инпутов и элемент кнопки
+  toggleButtonState(inputList, buttonElement);
 
 
+  //обходим все инпуты
+  inputList.forEach(function (input) {
 
-//функиця проверки состояния validity
-function isValid(evt) {
-  https://practicum.yandex.ru/learn/web-plus/courses/467b7164-c86d-4b1f-a89f-52f063a355b4/sprints/121366/topics/11997b4c-d767-4cac-b899-d9ed1fe9c7c6/lessons/e641ad29-f337-4d20-80e8-790918e40ec7/
+    //добавим всем иyпутам событие по вводу
+    input.addEventListener('input', function () {
 
-  //если состонияние валид false тогда будет выдавать сообщение об ошибке из validationMessage
-  if (!evt.target.validity.valid) {
+      //фнукция проверяет введенные данные на валидность
+      isValid(input);
 
-    showInputError(fieldErrorMessange, evt.target.validationMessage);
+    });
+  });
+
+  //функция общая проверка инпутов в форме на валидность
+  hasInvalidInput(inputList);
+}
+
+
+//функиця отвечает за проверку введенных данных и выдачу сообщенией об ошибках
+function isValid(inputElm) {
+
+
+  //находим привязанное спан поля для ошибки
+  const fieldErrorMessange = inputElm.closest('.popup__form').querySelector(`#${inputElm.id}-error`);
+
+  //если состонияние валид у инпута false тогда будет выдавать сообщение об ошибке из validationMessage
+  if (!inputElm.validity.valid) {
+
+    //вызвать функцию передать ей аргумент инпут,
+    showInputError(fieldErrorMessange, inputElm.validationMessage);
 
   } else {
 
@@ -272,15 +247,48 @@ function isValid(evt) {
 
 }
 
+
+//Дейстиве с кнопками SUBMIT
+function toggleButtonState(inputList, buttonElement) {
+
+  //если финкция вернет true занчит в полях ввода есть ошибки нужно заблокировать кнопку
+  if (hasInvalidInput(inputList)) {
+    buttonElement.disabled = true;
+    buttonElement.classList.add('popup__button_active');
+  } else {
+    // иначе сделай кнопку активной
+    buttonElement.disabled = false;
+    buttonElement.classList.remove('popup__button_active');
+  }
+};
+
+//функция проверка списка инпутов в форме на валидность
+//принимаем аргумент как массив
+function hasInvalidInput(inputList) {
+
+  return inputList.some((elm) => {
+
+    return !elm.validity.valid;
+
+  });
+}
+
+
+//Показать сообщение об ошибке
 function showInputError(spanName, textErrorMessange) {
   spanName.textContent = textErrorMessange;
   spanName.classList.add('popup__errorMessange_active');
 }
 
+
+//Скрыть сообщение об ошибки
 function hidenInputError(spanName) {
   spanName.textContent = '....';
   spanName.classList.remove('popup__errorMessange_active');
 }
+
+
+
 
 
 

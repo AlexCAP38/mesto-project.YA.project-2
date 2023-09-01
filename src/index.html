@@ -51,8 +51,8 @@
         <span class="popup__errorMessange" id="popup__input-name-error">Error.</span>
         <input class=" popup__input" type="text" id="popup__input-about" name="popup__input-about" placeholder="О себе"
           required minlength="2" maxlength="200" pattern="[A-Za-zА-Яа-яЁё\s\-]{1,200}">
-          <span class="popup__errorMessange"></span>
-        <button class="popup__button popup__button_active" type="submit"
+        <span class="popup__errorMessange" id="popup__input-about-error">Error.</span>
+        <button class="popup__button" type="submit"
           aria-label="Сохранить отредактированную форму профиля.">Сохранить</button>
       </form>
     </div>
@@ -67,8 +67,10 @@
         <input class="popup__input popup__input_media-screen" type="text" id="popup__input-name"
           name="popup__input-name" placeholder="Название" required minlength="2" maxlength="30"
           pattern="[A-Za-zА-Яа-яЁё\s\-]{1,30}">
+        <span class="popup__errorMessange" id="popup__input-name-error">Error.</span>
         <input class="popup__input" type="url" id="popup__input-link" name="popup__input-link"
           placeholder="Ссылка на картинку" required>
+        <span class="popup__errorMessange" id="popup__input-link-error">Error.</span>
         <button class="popup__button" type="submit" aria-label="Добавить новую карточку">Создать</button>
       </form>
     </div>
