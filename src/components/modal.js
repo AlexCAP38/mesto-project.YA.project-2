@@ -1,41 +1,16 @@
-export {openPopup, closePopup}
+export { showImage }
+import { openPopup } from './utils.js';
 
-
-//Функция открытия попапа
-//when it is popap opening add event keydown
+//Функция открытие модального окна для просмотра изображений
 //===========================================================================================
-function openPopup(popup) {
-  popup.classList.add('popup_opened'); //открываем попап
+const popupViewerContainer = document.querySelector('#popup-viewer');               //находим форму мод. окна
+const popupViewerImage = popupViewerContainer.querySelector('.popup__image');       //в этой форме ищем элемент для картинки
+const popupViewerTitle = popupViewerContainer.querySelector('.popup__title');       // в тойже форме ище элемент для наименование
 
-  //Устанавливаем слушатель на весь документ. отслеживаем нажатие клавиш.
-  document.addEventListener('keydown', (event) => {
+function showImage(url, name) {
+  popupViewerImage.setAttribute('src', url);                                        //присваиваем урл атрибут
+  popupViewerImage.setAttribute('alt', 'Изображение ' + name);
 
-    //Если нажата клавиша Escape, вызовим функция закрытия попапа
-    if (event.key === 'Escape') {
-      closePopup(popup);
-    }
-
-  });
-
-  //Устанавливаем слушатель на клик мыши на всю форму модального окна
-  popup.addEventListener('click', (event) => {
-
-    //Оверлей это наш весь попап если по нему щелнули тогда вызываем функцию закрывия окна
-    if (popup === event.target) {
-      closePopup(popup);
-    }
-
-  });
+  popupViewerTitle.textContent = name;                                              //присваиваем название изображения
+  openPopup(popupViewerContainer);                                                  //открываем попап "просомтр фотографии"
 }
-
-//Функция закрытия попапа попапа
-//===========================================================================================
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-
-  //чтобы прослушивания события не занимала память удаляем ее
-  document.removeEventListener('keydown', (event) => { });
-  popup.removeEventListener('click', (event) => { });
-
-}
-

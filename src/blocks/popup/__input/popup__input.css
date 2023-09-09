@@ -11,7 +11,8 @@
 }
 
 .popup__input:last-of-type {
-  margin: 22px auto 0;
+  /* margin: 22px auto 0; */
+  margin: 14px auto 0;
 }
 
 @media screen and (max-width: 700px) {
