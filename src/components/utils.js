@@ -1,5 +1,4 @@
 export { openPopup, closePopup }
-import { enableValidation } from './validate.js';
 
 //Функция открытия попапа
 //when it is popap opening add event keydown
@@ -7,22 +6,10 @@ import { enableValidation } from './validate.js';
 function openPopup(popup) {
   popup.classList.add('popup_opened');                                    //открываем попап
 
-  document.addEventListener('keydown', (event) => {                       //Устанавливаем слушатель на весь документ. отслеживаем нажатие клавиш.
-    if (event.key === 'Escape') {                                         //Если нажата клавиша Escape, вызовим функция закрытия попапа
-      closePopup(popup);
-    }
-  });
+  document.addEventListener('keydown', pressKey);                         //Устанавливаем слушатель на весь документ. отслеживаем нажатие клавиш.
 
   popup.addEventListener('click', clickOverlay);                          //Устанавливаем слушатель на клик мыши на всю форму модального окна
 
-  enableValidation({                                                              //Основная проверка
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button_active',
-    errorClass: 'popup__errorMessange_active',
-    inputErrorClass: 'popup__input_error'
-  });
 }
 
 
@@ -32,7 +19,7 @@ function closePopup(popup) {
 
   popup.classList.remove('popup_opened');                                 //получает элемент попап как аргумент и удаляем у него клас "открывающий попап"
 
-  document.removeEventListener('keydown', (event) => { });                      //Удалить событие нажатия клавиши
+  document.removeEventListener('keydown', pressKey);                      //Удалить событие нажатия клавиши
 
   popup.removeEventListener('click', clickOverlay);                       //Удалить событие клик
 }
@@ -47,4 +34,11 @@ function clickOverlay(event) {
     closePopup(event.target.closest('.popup'));                           //закрыть попап
   }
 
+}
+
+function pressKey(event) {
+  if (event.key === 'Escape') {                                         //Если нажата клавиша Escape, вызовим функция закрытия попапа
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+  }
 }

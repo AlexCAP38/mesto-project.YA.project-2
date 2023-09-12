@@ -2,7 +2,8 @@ import '../pages/index.css';
 import { initialCards } from './array.js';
 import { closePopup, openPopup } from './utils.js';
 import { createCard } from './card.js';
-import { enableValidation } from './validate.js';
+import { enableValidation, findInput } from './validate.js';
+
 
 //===========================================================================================
 //БЛОК модальное окно "редактирования профиля"
@@ -14,11 +15,22 @@ const profileSubtitle = document.querySelector('.profile__subtitle');       //в
 export const popupInputName = document.querySelector('#popup__input-name');        //находим input в модальном окне "ред.профиля"
 export const popupInputAbout = document.querySelector('#popup__input-about');
 
+getContent();
+
 profileEditButton.addEventListener('click', function () {                   //отслеживаем событие по нажатию на кнопку "редактирования профиля"
 
   formElementEditProfile.reset();                                           //очищаем форму
 
   getContent();                                                             //обновляем контект каждый раз при открытие попапа
+
+  findInput(popupEditprofile.querySelector('.popup__form'), {               //проверка инпутов при повторном открытие попапа
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_active',
+    errorClass: 'popup__errorMessange_active',
+    inputErrorClass: 'popup__input_error'
+  });
 
   openPopup(popupEditprofile);                                              //открываем попап
 
