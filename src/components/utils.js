@@ -7,12 +7,13 @@ import { enableValidation } from './validate.js';
 function openPopup(popup) {
   popup.classList.add('popup_opened');                                    //открываем попап
 
-  if (popup.querySelector('form')) {
-    popup.querySelector('form').reset();
-  }
+  document.addEventListener('keydown', (event) => {                       //Устанавливаем слушатель на весь документ. отслеживаем нажатие клавиш.
+    if (event.key === 'Escape') {                                         //Если нажата клавиша Escape, вызовим функция закрытия попапа
+      closePopup(popup);
+    }
+  });
 
-  document.addEventListener('keydown', pressKey);                         //Устанавливаем слушатель на весь документ. отслеживаем нажатие клавиш.
-  popup.addEventListener('click', pressKey);                              //Устанавливаем слушатель на клик мыши на всю форму модального окна
+  popup.addEventListener('click', clickOverlay);                          //Устанавливаем слушатель на клик мыши на всю форму модального окна
 
   enableValidation({                                                              //Основная проверка
     formSelector: '.popup__form',
@@ -22,36 +23,28 @@ function openPopup(popup) {
     errorClass: 'popup__errorMessange_active',
     inputErrorClass: 'popup__input_error'
   });
-
-
-
 }
 
 
 //Функция закрытия попапа
 //===========================================================================================
 function closePopup(popup) {
+
   popup.classList.remove('popup_opened');                                 //получает элемент попап как аргумент и удаляем у него клас "открывающий попап"
 
-  document.removeEventListener('keydown', pressKey);                      //Удалить событие нажатия клавиши
-  popup.removeEventListener('click', pressKey);                           //Удалить событие клик
+  document.removeEventListener('keydown', (event) => { });                      //Удалить событие нажатия клавиши
 
-  popup.querySelectorAll('span')                                          //Деактивировать поля с ошибками
-    .forEach((element) => {
-      element.classList.remove('popup__errorMessange_active');
-    })
+  popup.removeEventListener('click', clickOverlay);                       //Удалить событие клик
 }
 
 
-function pressKey(event) {
+//Функция клика мыши
+//===========================================================================================
+function clickOverlay(event) {
 
-  if (event.key === 'Escape') {                                           //Если нажата клавиша Escape, вызовим функция закрытия попапа
-    document.querySelectorAll('.popup')                                   //найдет все попапы
-      .forEach((element) => {                                             //обойдет каждый
-        closePopup(element);                                              //вызовит функцию закрытия
-      });
-
-  } else if (event.type === 'click' && event.target.classList.contains('popup') || event.type === 'click' && event.target.classList.contains('popup__close')) { //если клик
-    closePopup(event.target.closest('.popup'));
+  if (event.target.classList.contains('popup') ||                         //Если клик по оверлаю тогда
+    event.target.classList.contains('popup__close')) {                    //Если клик по крестику тогда
+    closePopup(event.target.closest('.popup'));                           //закрыть попап
   }
+
 }

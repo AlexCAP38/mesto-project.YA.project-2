@@ -14,10 +14,12 @@ const profileSubtitle = document.querySelector('.profile__subtitle');       //в
 export const popupInputName = document.querySelector('#popup__input-name');        //находим input в модальном окне "ред.профиля"
 export const popupInputAbout = document.querySelector('#popup__input-about');
 
-getContent();                                                               //Присвоит контент для попапа для проверки
-
 profileEditButton.addEventListener('click', function () {                   //отслеживаем событие по нажатию на кнопку "редактирования профиля"
+
+  formElementEditProfile.reset();                                           //очищаем форму
+
   getContent();                                                             //обновляем контект каждый раз при открытие попапа
+
   openPopup(popupEditprofile);                                              //открываем попап
 
 });
@@ -27,6 +29,21 @@ function getContent() {
   popupInputAbout.setAttribute('value', profileSubtitle.textContent);
 }
 
+
+//БЛОК сохранения и отправка формы "редактирования профиля"
+//===========================================================================================
+const formElementEditProfile = document.querySelector('#popup__form-edit-profile');//ищем форму отправки попапа "редактирования профиля"
+const nameInput = formElementEditProfile.querySelector('#popup__input-name');   //в ней ищем инпуты
+const jobInput = formElementEditProfile.querySelector('#popup__input-about');
+
+formElementEditProfile.addEventListener('submit', function formSubmitHandler(evt) {//отслеживаем событие нажатия кнопки сохранить
+  evt.preventDefault();                                                         //пропускает собтыие сабмит и продолжает выполнть следующий код
+  profileTitle.textContent = nameInput.value;                                   //присваивает элементам контена на страницы значение из поля ввода
+  profileSubtitle.textContent = jobInput.value;
+  closePopup(popupEditprofile);                                                 //закрываем попап
+});
+
+
 //===========================================================================================
 //БЛОК "Новая карточка" по нажатию на кнопку открывается попап для добавления новой карточки
 //===========================================================================================
@@ -34,8 +51,9 @@ const profileAddButton = document.querySelector('.profile__add-button');      //
 const popupNewCard = document.querySelector('#popup-new-card');               //находим форму для открятия
 
 profileAddButton.addEventListener('click', function () {                      //Открытие попапа при нажатие на кнопку
+  formNewcard.reset();                                                        //очищаем форму
   openPopup(popupNewCard);                                                    //открываем попап
-  popupNewCard.querySelector('#popup__form-new-card').reset();                //очищаем форму
+
 });
 
 
@@ -50,29 +68,7 @@ formNewcard.addEventListener('submit', function formSubmitHandler(evt) {      //
   places.prepend(createCard(nameCardInput.value, urlInput.value));
   closePopup(popupNewCard);                                                   //закрываем попап
 });
-/*
-//Блок закрытия модальных окон через нажатие кнопки "close"
-//===========================================================================================
-const buttonCloseList = document.querySelectorAll('.popup__close');            //"кнопка" элемент для закрытия попапов
 
-buttonCloseList.forEach((Element) => {                                         //перебираем массив
-  Element.addEventListener('click', function (event) {                         //устанавливает событие клика на каждую кнопку
-    closePopup(event.target.closest('.popup'));                                //закрыть попап
-  });
-});*/
-
-//БЛОК сохранения и отправка формы "редактирования профиля"
-//===========================================================================================
-const formElementEditProfile = document.querySelector('#popup__form-edit-profile');//ищем форму отправки попапа "редактирования профиля"
-const nameInput = formElementEditProfile.querySelector('#popup__input-name');   //в ней ищем инпуты
-const jobInput = formElementEditProfile.querySelector('#popup__input-about');
-
-formElementEditProfile.addEventListener('submit', function formSubmitHandler(evt) {//отслеживаем событие нажатия кнопки сохранить
-  evt.preventDefault();                                                         //пропускает собтыие сабмит и продолжает выполнть следующий код
-  profileTitle.textContent = nameInput.value;                                   //присваивает элементам контена на страницы значение из поля ввода
-  profileSubtitle.textContent = jobInput.value;
-  closePopup(popupEditprofile);                                                 //закрываем попап
-});
 
 //БЛОК добавления на страницу n карточек название и ссылки берем из массива
 //===========================================================================================
