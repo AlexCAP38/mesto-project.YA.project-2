@@ -1,7 +1,7 @@
 //===========================================================================================
 //Валидация инпутов, проверка на корректность ввода
 //===========================================================================================
-export { enableValidation, hidenInputError, findInput, toggleButtonState, isValid}
+export { enableValidation, hidenInputError, findInput, toggleButtonState, isValid }
 
 function enableValidation({ ...selectorList }) {                               //основаня функция проверки
 
@@ -20,11 +20,11 @@ function findInput(form, selectorList) {
 
   inputList.forEach(function (inputElement) {                                 //обойдет все инпуты из массива
 
-      isValid(inputElement, selectorList);                                    //Проверяет введенные данные на валидность
+    isValid(inputElement, selectorList);                                    //Проверяет введенные данные на валидность
 
-      toggleButtonState(inputList, form, selectorList);                       //При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
+    toggleButtonState(inputList, form, selectorList);                       //При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
 
-    });
+  });
 
   inputList.forEach(function (inputElement) {                                 //обойдет все инпуты из массива
     inputElement.addEventListener('input', function () {                      //Событие по вводу
@@ -35,12 +35,13 @@ function findInput(form, selectorList) {
 
     });
   });
+
 }
 
 
 //Отвечает за проверку введенных данных и выдачу сообщенией об ошибках, принимает аргумент один инпут
 //===========================================================================================
-function isValid(inputElement, selectorList) {
+function isValid(inputElement, selectorList) {                                  //принемаем один инпут, и объект из селекторов
 
   const fieldErrorMessange = inputElement                                       //Находит поле для вывода ошибки
     .closest(selectorList.formSelector)                                         //находит родителя инпута по классу
@@ -48,7 +49,7 @@ function isValid(inputElement, selectorList) {
 
   if (!inputElement.validity.valid) {                                           //если состонияние инпута.valid false тогда будет выдавать сообщение об ошибке из validationMessage
 
-    if (inputElement.validity.patternMismatch) {                                //Если регулярные выражения не прошли провеку
+    if (inputElement.validity.patternMismatch) {                                //Если регулярные выражения  возвращают true, не прошли провеку
       inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");//создадть кастомное сообащение об ошибке
       //inputElement.classList.add(selectorList.inputErrorClass);
     } else {
@@ -64,7 +65,7 @@ function isValid(inputElement, selectorList) {
 
 //Дейстиве с кнопкой SUBMIT если формы не валидны
 //===========================================================================================
-function toggleButtonState(inputList, formParent, selectorList) {
+function toggleButtonState(inputList, formParent, selectorList) {                 //Принимает на вход список инпутов, форму где искать кнопку, объект из селекторов
 
   const buttonElement = formParent.querySelector(selectorList.submitButtonSelector);//находим кнопку в форме
 
@@ -75,6 +76,7 @@ function toggleButtonState(inputList, formParent, selectorList) {
     buttonElement.disabled = false;                                               // иначе сделай кнопку активной
     buttonElement.classList.remove(selectorList.inactiveButtonClass);
   }
+
 }
 
 

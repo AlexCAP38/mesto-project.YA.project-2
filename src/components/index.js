@@ -2,7 +2,7 @@ import '../pages/index.css';
 import { initialCards } from './array.js';
 import { closePopup, openPopup } from './utils.js';
 import { createCard } from './card.js';
-import { enableValidation, findInput } from './validate.js';
+import { enableValidation, isValid, toggleButtonState } from './validate.js';
 
 
 //===========================================================================================
@@ -23,14 +23,13 @@ profileEditButton.addEventListener('click', function () {                   //о
 
   getContent();                                                             //обновляем контект каждый раз при открытие попапа
 
-  findInput(popupEditprofile.querySelector('.popup__form'), {               //проверка инпутов при повторном открытие попапа
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button_active',
-    errorClass: 'popup__errorMessange_active',
-    inputErrorClass: 'popup__input_error'
+  const inputList = Array.from(popupEditprofile.querySelectorAll('.popup__input'));
+
+  inputList.forEach(function (inputElement) {                                //обойдет все инпуты из массива
+    isValid(inputElement, {formSelector: '.popup__form'});                   //Проверяет введенные данные на валидность
   });
+
+  toggleButtonState(inputList, popupEditprofile, {submitButtonSelector: '.popup__button', inactiveButtonClass: 'popup__button_active'});//При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
 
   openPopup(popupEditprofile);                                              //открываем попап
 
