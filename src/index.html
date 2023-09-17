@@ -18,8 +18,10 @@
     <main class="main-content">
 
       <section class="profile">
-        <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватарка Жак-Ив Кусто">
-
+        <div class="profile__container-avatar">
+          <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватарка">
+          <button type="button" class="profile__edit-avatar" aria-label="обновить аватар"></button>
+        </div>
         <div class="profile__container-out">
           <div class="profile__container-in">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -76,6 +78,33 @@
     </div>
   </div>
 
+  <!-- модальное окно для обновления аватарки -->
+  <div class="popup" id="popup-edit-avatar">
+    <button type="button" class="popup__close" aria-label="Закрыть форму редактирования профиля."></button>
+    <div class="popup__container popup__container_input popup__container_media-screen">
+      <form class="popup__form" action="#" id="popup__form-edit-avatar" name="popup__form" method="post">
+        <h2 class="popup__form-caption popup__form-caption_media-screen">Обновить аватар</h2>
+        <input class="popup__input" type="url" id="popup__input-link" name="popup__input-link"
+          placeholder="Ссылка на картинку" required>
+        <span class="popup__errorMessange" id="popup__input-link-error">Введите адрес сайта.</span>
+        <button class="popup__button" type="submit" aria-label="Обновить аватар">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- модальное окно для подтверждения удаления -->
+  <div class="popup" id="popup-confirm-delete-card">
+    <div class="popup__container popup__container_input">
+      <form class="popup__form" action="#" id="popup__form-confirm-delete-card" name="popup__form" method="post"
+        novalidate>
+        <h2 class="popup__form-caption">Вы уверены?</h2>
+        <button class="popup__button" type="submit" aria-label="Подтверждение удаления карточки">Да</button>
+      </form>
+    </div>
+  </div>
+
   <!-- модальное окно для просмотра картинок -->
   <div class="popup popup_width" id='popup-viewer'>
     <button type="button" class="popup__close" aria-label="Закрыть изображение."></button>
@@ -87,13 +116,18 @@
 
   <!-- Темплейт для новых карточек -->
   <template id="template-places__card">
-    <div class="places__card">
-      <button type="button" class="places__trash-icon" aria-label="Удалить карточку"></button>
+    <div class="places__card" id="">
+      <button type="button" class="places__trash-icon places__trash-icon_disable"
+        aria-label="Удалить карточку"></button>
       <img class="places__image" src="" alt="">
       <div class="places__container">
         <h2 class="places__title"></h2>
-        <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
+        <div>
+          <button type="button" class="places__like-icon" aria-label="Лайкнуть карточку"></button>
+          <p class="places__like-counter"></p>
+        </div>
       </div>
+
   </template>
 
   <!-- <script src="./pages/script.js"></script> -->
