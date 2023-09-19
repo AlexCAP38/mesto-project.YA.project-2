@@ -21,11 +21,11 @@ export const getUserProfile = (config) => {                                     
   })
 
     .then((getresourse) => {                                                      //получили информацию от сервера
-      if (getresourse.ok) {                                                       //если статус true тогда
-        return getresourse.json();                                                //распарсим JSON ответ в объект
-      } else reject                                                               //иначе ошибка в запросе
-
-      //checkAnswer(getresourse);
+      // if (getresourse.ok) {                                                       //если статус true тогда
+      //   return getresourse.json();                                                //распарсим JSON ответ в объект
+      // } else reject                                                               //иначе ошибка в запросе
+      //return getresourse.json();
+      return checkAnswer(getresourse);
     })
 
     .then((answerUserProfile) => {
@@ -34,7 +34,7 @@ export const getUserProfile = (config) => {                                     
 
     .catch((res) => {
       console.log(`${res.status} Ошибка. что-то с сервером информация о пользователе не получена`);
-    });
+    })
 }
 
 const setUserProfile = (object, name, subname, avatarIcon) => {
@@ -181,6 +181,8 @@ export const sendAvatar = (config, input, popup) => {
 //===========================================================================================
 const checkAnswer = (res) => {
   if (res.ok) {                                      //если статус true тогда
-    return res.json();                               //распарсим JSON ответ в объект
-  }
+    return res.json();
+
+  } else return Promise.reject(`Ошибка: ${res.status}`);
+
 }
