@@ -17,21 +17,14 @@ function enableValidation({ ...selectorList }) {                               /
 //===========================================================================================
 function findInput(form, selectorList) {
   const inputList = Array.from(form.querySelectorAll(selectorList.inputSelector));//ищем все инпуты в форме
+  const buttonElement = form.querySelector(selectorList.submitButtonSelector);    //находим кнопку в форме
 
-  inputList.forEach(function (inputElement) {                                 //обойдет все инпуты из массива
+  inputList.forEach(function (inputElement) {                                     //обойдет все инпуты из массива
+    inputElement.addEventListener('input', function () {                          //Событие по вводу
 
-    isValid(inputElement, selectorList);                                    //Проверяет введенные данные на валидность
+      isValid(inputElement, selectorList);                                        //Проверяет введенные данные на валидность
 
-    toggleButtonState(inputList, form, selectorList);                       //При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
-
-  });
-
-  inputList.forEach(function (inputElement) {                                 //обойдет все инпуты из массива
-    inputElement.addEventListener('input', function () {                      //Событие по вводу
-
-      isValid(inputElement, selectorList);                                    //Проверяет введенные данные на валидность
-
-      toggleButtonState(inputList, form, selectorList);                       //При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
+      toggleButtonState(inputList, buttonElement, selectorList);                  //При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
 
     });
   });
@@ -50,24 +43,22 @@ function isValid(inputElement, selectorList) {                                  
   if (!inputElement.validity.valid) {                                           //если состонияние инпута.valid false тогда будет выдавать сообщение об ошибке из validationMessage
 
     if (inputElement.validity.patternMismatch) {                                //Если регулярные выражения  возвращают true, не прошли провеку
-      inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");//создадть кастомное сообащение об ошибке
-      //inputElement.classList.add(selectorList.inputErrorClass);
+      inputElement.setCustomValidity(inputElement.getAttribute('data-error'));  //создадть кастомное сообащение об ошибке
     } else {
       inputElement.setCustomValidity("");                                       //убрать кастомное сообащение об ошибке
-      //inputElement.classList.remove(selectorList.inputErrorClass);
     }
 
-    showInputError(fieldErrorMessange, inputElement.validationMessage, selectorList);         //Показать ошибку, передаем функции аргументы поле для ошибки и ошибку текущего инпута
+    showInputError(fieldErrorMessange, inputElement, selectorList);//Показать ошибку, передаем функции аргументы поле для ошибки и ошибку текущего инпута
   } else {
-    hidenInputError(fieldErrorMessange, selectorList);
+    hidenInputError(fieldErrorMessange, inputElement, selectorList);
   }
 }
 
 //Дейстиве с кнопкой SUBMIT если формы не валидны
 //===========================================================================================
-function toggleButtonState(inputList, formParent, selectorList) {                 //Принимает на вход список инпутов, форму где искать кнопку, объект из селекторов
+function toggleButtonState(inputList, buttonElement, selectorList) {                 //Принимает на вход список инпутов, форму где искать кнопку, объект из селекторов
 
-  const buttonElement = formParent.querySelector(selectorList.submitButtonSelector);//находим кнопку в форме
+  //const buttonElement = formParent.querySelector(selectorList.submitButtonSelector);//находим кнопку в форме
 
   if (hasInvalidInput(inputList)) {                                               //если финкция вернет true занчит в полях ввода есть ошибки нужно заблокировать кнопку
     buttonElement.disabled = true;
@@ -95,15 +86,17 @@ function hasInvalidInput(inputList) {
 //Показать сообщение об ошибке, принимает аргументы:
 //Имя класса элемента спан, системную ошибку
 //===========================================================================================
-function showInputError(spanName, textErrorMessange, selectorList) {
-  spanName.textContent = textErrorMessange;
+function showInputError(spanName, inputElement, selectorList) {
+  spanName.textContent = inputElement.validationMessage;
+  inputElement.classList.add(selectorList.inputErrorClass);
   spanName.classList.add(selectorList.errorClass);
 }
 
 
 //Скрыть сообщение об ошибки
 //===========================================================================================
-function hidenInputError(spanName, selectorList) {
+function hidenInputError(spanName, inputElement, selectorList) {
   spanName.textContent = '';
   spanName.classList.remove(selectorList.errorClass);
+  inputElement.classList.remove(selectorList.inputErrorClass);
 }
