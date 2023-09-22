@@ -143,6 +143,9 @@ export const sendAvatar = (input) => {
 //===========================================================================================
 const checkAnswer = (response) => {
   if (!response.ok) {                                      //если статус true тогда
-    return Promise.reject(`Ошибка: ${response.status}`)
+    //return Promise.reject(`Ошибка: ${response.status}`)
+
+    //чет я не понял как этот код работает. я всяка разно пытался вызвать это сообщение вылазит сообщение из катч
+    return response.json().then(err => {Promise.reject(`Ошибка: ${err.message}. Код ошибки: ${response.status}`)})
   } else return response.json();                           //распарсим и вернем объект
 }

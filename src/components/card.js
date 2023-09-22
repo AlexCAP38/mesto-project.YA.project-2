@@ -30,12 +30,18 @@ function createCard(getObjcard) {                                               
         .then(() => {
           placesLikeIcon.classList.toggle('places__like-icon_active');
           likeCounter.textContent--                                                     //уменьшим счетчик на -1
+        })
+        .catch((error) => {
+          console.log('Ошибка удаления лайка: ' + error);
         });
       } else {
       sendlikeSRV(placesLikeIcon.closest('.places__card').id)                           //добавил иконку на серве и ативиурем лайк
         .then(() => {
           placesLikeIcon.classList.toggle('places__like-icon_active');
           likeCounter.textContent++                                                     //увеличим счетчик на +1
+        })
+        .catch((error) => {
+          console.log('Ошибка добавления лайка: ' + error);
         });
     }
   });
