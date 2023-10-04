@@ -1,89 +1,28 @@
 import '../pages/index.css';
-import Popup from './modal.js';
-import FormValidator from './validate.js';
-import Api from './api.js';
-import Card from './card.js';
-import Section from './section.js';
-import UserInfo from './userinfo.js';
-import { templateCard, config } from './variable.js';
-
+import { closePopup, openPopup } from './modal.js';
+import { createCard } from './card.js';
+import { enableValidation, isValid } from './validate.js';
+import { getUserProfile, getCardsSRV, sendUserProfile, sendCardsSRV, deleteCardsSRV, sendAvatar, config } from './api.js';
 
 //БЛОК наполнение страницы
 //===========================================================================================
 export let userId = undefined;                                       //мой ID получит когда загрузит информацию о пользователе
 
-const api = new Api(config);
-const popup = new Popup();
-
-const card = new Card(templateCard, {
-  deletelikeSRV: (placesLikeIcon, likeCounter) => {
-    api.deletelikeSRV(placesLikeIcon.closest('.places__card').id)                         //удалим лайк с сервера и деактивируем иконку
-      .then(() => {
-        placesLikeIcon.classList.toggle('places__like-icon_active');
-        likeCounter.textContent--                                                         //уменьшим счетчик на -1
-      })
-      .catch((error) => {
-        console.log('Ошибка удаления лайка: ' + error);
-      });
-  },
-  sendlikeSRV: (placesLikeIcon, likeCounter) => {
-    api.sendlikeSRV(placesLikeIcon.closest('.places__card').id)                           //добавил иконку на серве и ативиурем лайк
-      .then(() => {
-        placesLikeIcon.classList.toggle('places__like-icon_active');
-        likeCounter.textContent++                                                           //увеличим счетчик на +1
-      })
-      .catch((error) => {
-        console.log('Ошибка добавления лайка: ' + error);
-      });
-  },
-  openPopup: (modalWindow) => { popup.openPopup(modalWindow) },
-  handleCardClick: (url, name) => {
-    const popupViewerContainer = document.querySelector('#popup-viewer');        //находим форму мод. окна
-    const popupViewerImage = popupViewerContainer.querySelector('.popup__image');//в этой форме ищем элемент для картинки
-    const popupViewerTitle = popupViewerContainer.querySelector('.popup__title');// в тойже форме ище элемент для наименование
-
-
-    popupViewerImage.setAttribute('src', url);                                 //присваиваем урл атрибут
-    popupViewerImage.setAttribute('alt', 'Изображение ' + name);
-
-    popupViewerTitle.textContent = name;                                       //присваиваем название изображения
-    this._openPopup(popupViewerContainer);
-    //openPopup(popupViewerContainer);                                           //открываем попап "просомтр фотографии"
-  }
-});
-
-const userinfo = new UserInfo({                                         //объявляю класс аргументы объект из 2х селекторов
-  title: document.querySelector('.profile__title'),
-  subtitle: document.querySelector('.profile__subtitle'),
-  getInfo: () => { return api.getUserProfile() },
-  sendInfo: () => { return api.sendUserProfile() }
-})
-
-
-
-Promise.all([api.getUserProfile(), api.getCardsSRV()])
-  .then(([infoUser, infoCards]) => {                                 //получаем ответы ввиде массивов
+Promise.all([getUserProfile(), getCardsSRV()])
+  .then(([infoUser, infoCards]) => {
     profileTitle.textContent = infoUser.name;                        //присвоить имя из результат
     profileSubtitle.textContent = infoUser.about;                    //об пользователе
     profileAvatar.src = infoUser.avatar;                             //аватарка
 
     userId = infoUser._id;                                           //присвоили ID полученное от севера
 
-    //console.log(userinfo.getUserInfo(infoUser));
-
-    const section = new Section({ infoCards: infoCards });
-
     infoCards.forEach(element => {                                   //обойдем массив карточек
-      places.prepend(card.createCard(element));                           //добавит карточку на страницу
+      places.prepend(createCard(element));                           //добавит карточку на страницу
     })
-
   })
   .catch((error) => {
-    console.log('-->>   ' + error + '   <<-- ошибка в коде !!!');
+    console.log(error + ' что-то пошло не так =(');
   })
-
-
-
 
 //===========================================================================================
 //БЛОК модальное окно "редактирования профиля"
@@ -97,26 +36,22 @@ const profileAvatar = document.querySelector('.profile__avatar');     //элем
 export const popupInputName = document.querySelector('#popup__input-name');  //поле ввода "имени" в модальном окне "ред.профиля"
 export const popupInputAbout = document.querySelector('#popup__input-about');//поле ввода "о себе"  в модальном окне "ред.профиля"
 
-
 profileEditButton.addEventListener('click', function () {                   //отслеживаем событие по нажатию на кнопку "редактирования профиля"
-
-  userinfo.getUserInfo();
-  //getContent();                                                             //обновляем контект каждый раз при открытие попапа
+  getContent();                                                             //обновляем контект каждый раз при открытие попапа
 
   const inputList = Array.from(popupEditprofile.querySelectorAll('.popup__input'));
 
   inputList.forEach(function (inputElement) {                               //обойдет все инпуты из массива
-    formValidator.isValid(inputElement, { formSelector: '.popup__form' });                //Проверяет введенные данные на валидность
+    isValid(inputElement, { formSelector: '.popup__form' });                //Проверяет введенные данные на валидность
   });
 
-  //openPopup(popupEditprofile);                                              //открываем попап
-  popup.openPopup(popupEditprofile);
+  openPopup(popupEditprofile);                                              //открываем попап
 });
 
-// function getContent() {
-//   popupInputName.value = profileTitle.textContent;                          //устанавливаем инпутам атрибуты value присваиваем значение из контекста страницы
-//   popupInputAbout.value = profileSubtitle.textContent;
-// }
+function getContent() {
+  popupInputName.value = profileTitle.textContent;                          //устанавливаем инпутам атрибуты value присваиваем значение из контекста страницы
+  popupInputAbout.value = profileSubtitle.textContent;
+}
 
 
 //БЛОК сохранения и отправка формы "редактирования профиля"
@@ -130,24 +65,19 @@ formElementEditProfile.addEventListener('submit', function formSubmitHandler(evt
 
   formElementEditProfile.querySelector('.popup__button').textContent = 'Сохранение...'; //типа прогресс бар при нажантие на кнопку меняем название кнопки
 
+  sendUserProfile(nameInput.value, jobInput.value)                                  //отправка информации о пользователе на сервер
+    .then((result) => {
+      profileTitle.textContent = result.name;                                       //присваивает элементам на страницы значение из ответа сервера
+      profileSubtitle.textContent = result.about;
 
-
-  userinfo.setUserInfo(nameInput.value, jobInput.value);
-  // api.sendUserProfile(nameInput.value, jobInput.value)                                  //отправка информации о пользователе на сервер
-  //   .then((result) => {
-  //     profileTitle.textContent = result.name;                                       //присваивает элементам на страницы значение из ответа сервера
-  //     profileSubtitle.textContent = result.about;
-
-  //     //closePopup(popupEditprofile);                                                 //закрываем попап
-  //     popup.closePopup(popupEditprofile);
-  //   })
-  //   .catch((error) => {
-  //     console.log('Ошибка: ' + error);
-  //   })
-  //   .finally(() => {
-  //     formElementEditProfile.querySelector('.popup__button').textContent = 'Сохранить'; //при любом исходе промиса возрашаем название кнопки
-  //   })
-
+      closePopup(popupEditprofile);                                                 //закрываем попап
+    })
+    .catch((error) => {
+      console.log('Ошибка: ' + error);
+    })
+    .finally(() => {
+      formElementEditProfile.querySelector('.popup__button').textContent = 'Сохранить'; //при любом исходе промиса возрашаем название кнопки
+    })
 });
 
 //БЛОК Обновление аватарки на сервере
@@ -162,8 +92,7 @@ buttonEditAvatar.addEventListener('click', () => {
   popupEditAvatar.querySelector('.popup__button').classList.add('popup__button_active');
 
   formEditAvatar.reset();
-  //openPopup(popupEditAvatar);
-  popup.openPopup(popupEditAvatar);
+  openPopup(popupEditAvatar);
 });
 
 formEditAvatar.addEventListener('submit', (evt) => {
@@ -171,11 +100,10 @@ formEditAvatar.addEventListener('submit', (evt) => {
   formEditAvatar.querySelector('button').textContent = 'Сохранение...';
 
   const inputEditAvatar = formEditAvatar.querySelector('input');                //элемент полле ввода
-  api.sendAvatar(inputEditAvatar)
+  sendAvatar(inputEditAvatar)
     .then((resourse) => {
       document.querySelector('.profile__avatar').src = inputEditAvatar.value;
-      //closePopup(popupEditAvatar);                                              //закрываем попап
-      popup.closePopup(popupEditAvatar);
+      closePopup(popupEditAvatar);                                              //закрываем попап
     })
     .catch((error) => {
       console.log('Ошибка отправки: ' + error);
@@ -199,8 +127,7 @@ profileAddButton.addEventListener('click', function () {                      //
 
   formNewcard.reset();                                                        //очищаем форму
 
-  //openPopup(popupNewCard);                                                    //открываем попап
-  popup.openPopup(popupNewCard);
+  openPopup(popupNewCard);                                                    //открываем попап
 });
 
 
@@ -214,11 +141,10 @@ export const places = document.querySelector('.places');                      //
 formNewcard.addEventListener('submit', function formSubmitHandler(evt) {      //событие при нажатие кнопки "сохранить"
   evt.preventDefault();                                                       //пропускает отправку и продолжает выполнть следующий код
   evt.target.querySelector('.popup__button').textContent = 'Сохранение...';
-  api.sendCardsSRV(nameCardInput.value, urlInput.value)                       //отправит информацию на сревер
+  sendCardsSRV(nameCardInput.value, urlInput.value)                           //отправит информацию на сревер
     .then((result) => {
-      places.prepend(card.createCard(result));                   //ответ сервера и шаблон для создания карточки закидываем в метод добваления новой карточки
-      //closePopup(popupNewCard);                                               //закрываем попап
-      popup.closePopup(popupNewCard);
+      places.prepend(createCard(result));                                     //ответ сервера закидываем в фиункцию добваления новой карточки
+      closePopup(popupNewCard);                                               //закрываем попап
     })
     .catch((error) => {
       console.log('Ошибка отправки: ' + error);
@@ -235,8 +161,7 @@ const popupConfirmDelete = document.querySelector('#popup-confirm-delete-card');
 let deletingCard = undefined;
 
 export const deleteCard = (trashLikeIcon) => {
-  //openPopup(popupConfirmDelete);                                                        //откроет попап
-  popup.openPopup(popupConfirmDelete);
+  openPopup(popupConfirmDelete);                                                        //откроет попап
   return deletingCard = trashLikeIcon.closest('div')
 }
 
@@ -245,11 +170,10 @@ popupConfirmDelete.querySelector('#popup__form-confirm-delete-card')            
 
     event.preventDefault();                                                           //пропускает отправку и продолжает выполнть следующий код
 
-    api.deleteCardsSRV(deletingCard.id)                                                   //отправит запрос на удаление карточик
+    deleteCardsSRV(deletingCard.id)                                                   //отправит запрос на удаление карточик
       .then(() => {
         deletingCard.remove();                                                        //при нажатие на икону найти родителя по тегу и удалить его
-        //closePopup(popupConfirmDelete);                                               //закрываем попап
-        popup.closePopup(popupConfirmDelete);
+        closePopup(popupConfirmDelete);                                               //закрываем попап
       })
       .catch((error) => {
         console.log('Ошибка удаления карточки: ' + error);
@@ -262,8 +186,7 @@ popupConfirmDelete.querySelector('#popup__form-confirm-delete-card')            
 //===========================================================================================
 //Валидация инпутов, проверка на корректность ввода
 //===========================================================================================
-
-const formValidator = new FormValidator({                                                              //Основная проверка
+enableValidation({                                                              //Основная проверка
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
@@ -271,14 +194,3 @@ const formValidator = new FormValidator({                                       
   errorClass: 'popup__errorMessange_active',
   inputErrorClass: 'popup__input_error'
 });
-
-formValidator.enableValidation();
-
-// formValidator.enableValidation({                                                              //Основная проверка
-//   formSelector: '.popup__form',
-//   inputSelector: '.popup__input',
-//   submitButtonSelector: '.popup__button',
-//   inactiveButtonClass: 'popup__button_active',
-//   errorClass: 'popup__errorMessange_active',
-//   inputErrorClass: 'popup__input_error'
-// });

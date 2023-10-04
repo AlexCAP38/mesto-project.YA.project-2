@@ -1,95 +1,73 @@
+export { createCard }
+import { sendlikeSRV, deletelikeSRV } from './api.js';
 import { deleteCard, userId } from './index.js';
+import { showImage } from './modal.js';
 
-export default class Card {
+const templatePlacesCard = document.querySelector('#template-places__card').content;  //находим темплейт по id запихиваем в переменную содержимое темплейта
 
-  constructor(templateCard, { deletelikeSRV, sendlikeSRV, openPopup }) {
-    this._selector = templateCard;
-    this._deleteLikeSRV = deletelikeSRV;
-    this._sendlikeSRV = sendlikeSRV;
-    this._openPopup = openPopup;
+function createCard(getObjcard) {                                                       //Функция собирает новую карточку из темплейта и возвращает ее в переменной
+  const newPlacesCard = templatePlacesCard.querySelector('.places__card').cloneNode(true);//имещ в темплейте элемент для клонирования записываем ее в переменную
+  const trashLikeIcon = newPlacesCard.querySelector('.places__trash-icon');             //найти элемент "иконка корзина"
+  const placesLikeIcon = newPlacesCard.querySelector('.places__like-icon');             //найти элемент "иконка лайка"
+  const placesImage = newPlacesCard.querySelector('.places__image');                    //найти элемент "фотографию"
+  const likeCounter = newPlacesCard.querySelector('.places__like-counter');             //найти элемент "счетчик лайков"
+
+  newPlacesCard.querySelector('.places__title').textContent = getObjcard.name;          //присваиваем значения из инпута в карточку
+  newPlacesCard.querySelector('.places__image').alt = 'Изображение ' + getObjcard.name;
+  newPlacesCard.querySelector('.places__image').src = getObjcard.link;
+
+  //удаление своей карточки
+  if (getObjcard.owner._id === userId) {                                                //если полученный id карточки равен моему, дать возможность удалять
+    trashLikeIcon.classList.remove('places__trash-icon_disable');                       //удалит класс скрывающий кнопку
+    trashLikeIcon.addEventListener('click', function (event) {                          //событие по клику Удаление карточки
+      deleteCard(trashLikeIcon);                                                        //показать попап подтверждения удаления => удалить карточку
+    });
   }
 
-  _getElement() {
-    const newCard = this._selector.content
-      .querySelector('.places__card')
-      .cloneNode(true);//имещ в шаблон для клонирования записываем ее в переменную
-    return newCard
+  placesLikeIcon.addEventListener('click', function (event) {                           //событие на установки и удаления "Лайка"
+    if (placesLikeIcon.classList.contains('places__like-icon_active')) {                //Если иконка активирована зачит
+      deletelikeSRV(placesLikeIcon.closest('.places__card').id)                         //удалим лайк с сервера и деактивируем иконку
+        .then(() => {
+          placesLikeIcon.classList.toggle('places__like-icon_active');
+          likeCounter.textContent--                                                     //уменьшим счетчик на -1
+        })
+        .catch((error) => {
+          console.log('Ошибка удаления лайка: ' + error);
+        });
+      } else {
+      sendlikeSRV(placesLikeIcon.closest('.places__card').id)                           //добавил иконку на серве и ативиурем лайк
+        .then(() => {
+          placesLikeIcon.classList.toggle('places__like-icon_active');
+          likeCounter.textContent++                                                     //увеличим счетчик на +1
+        })
+        .catch((error) => {
+          console.log('Ошибка добавления лайка: ' + error);
+        });
+    }
+  });
+
+  if (getObjcard.likes.length >= 0) {                                                   //проверить на наличие лайков
+    likeCounter.textContent = getObjcard.likes.length;                                  //присвоить кол-во лайков
   }
 
-  // _deleteMyCard() {                                                                       //удаление своей карточки
-  //   const trashLikeIcon = this._getElement.querySelector('.places__trash-icon');             //найти элемент "иконка корзина", присвоит имя
-  //   if (getObjcard.owner._id === userId) {                                                //если полученный id карточки равен моему, дать возможность удалять
-  //     trashLikeIcon.classList.remove('places__trash-icon_disable');                       //удалит класс скрывающий кнопку
-  //     trashLikeIcon.addEventListener('click', (event) => {                          //событие по клику Удаление карточки
-  //       deleteCard(trashLikeIcon);                                                        //показать попап подтверждения удаления => удалить карточку
-  //     });
-  //   }
-  // }
-  //===========================================================================================
-  //Метод создает новую карточку из шаблона и возвращает ее в переменной
-  createCard(getObjcard) {
+  findMyId(getObjcard, userId, placesLikeIcon);                                         //Функция нахождения моих лайков
 
-    const placesLikeIcon = this._getElement().querySelector('.places__like-icon');             //найти элемент "иконка лайка"
-    const placesImage = this._getElement().querySelector('.places__image');                    //найти элемент "фотографию"
-    const likeCounter = this._getElement().querySelector('.places__like-counter');             //найти элемент "счетчик лайков"
+  placesImage.addEventListener('click', function (event) {                              //событие по нажатию на фотографию
+    showImage(placesImage.src, getObjcard.name);                                        //при нажание на картинку вызываем функцию открытия попапа
+  });
 
-    this._getElement().querySelector('.places__title').textContent = getObjcard.name;          //присваиваем значения из инпутов в карточку
-    this._getElement().querySelector('.places__image').alt = 'Изображение ' + getObjcard.name;
-    this._getElement().querySelector('.places__image').src = getObjcard.link;
+  newPlacesCard.id = getObjcard._id;                                                    //присвоит иникальный индификатор карточке взятый с сервера
 
+  return newPlacesCard
+}
 
-    // placesLikeIcon.addEventListener('click', (event) => {                           //событие на установки и удаления "Лайка"
-    //   if (placesLikeIcon.classList.contains('places__like-icon_active')) {                //Если иконка активирована зачит
-    //     this._deleteLikeSRV(placesLikeIcon, likeCounter);
-    //   } else {
-    //     this._sendlikeSRV(placesLikeIcon, likeCounter);
-    //   }
-    // });
-
-    // if (getObjcard.likes.length >= 0) {                                                   //проверить на наличие лайков
-    //   likeCounter.textContent = getObjcard.likes.length;                                  //присвоить кол-во лайков
-    // }
-
-    // this._findMyId(getObjcard, userId, placesLikeIcon);                                   //Функция нахождения моих лайков
-
-    // placesImage.addEventListener('click', (event) => {                              //событие по нажатию на фотографию
-    //   this._showImage(placesImage.src, getObjcard.name);                                        //при нажание на картинку вызываем функцию открытия попапа
-    // });
-
-    // newCard.id = getObjcard._id;                                                          //присвоит иникальный индификатор карточке взятый с сервера
-
-    return newCard
+//Функция нахождения моих лайков
+const findMyId = (obj, myId, placesLikeIcon) => {                                       //получает объект карточек и мой id
+  if (obj.likes.length > 0) {
+    obj.likes.forEach(elm => {                                                          //обходим каждый элемент в объекте likes
+      if (elm._id === myId) {                                                           //если id равны
+        placesLikeIcon.classList.add('places__like-icon_active');                       //сделать лайк активным
+      }
+    })
   }
-
-  // //===========================================================================================
-  // //Функция нахождения моих лайков
-  // _findMyId = (getObjcard, myId, placesLikeIcon) => {                                     //получает объект карточек и мой id
-  //   if (getObjcard.likes.length > 0) {
-  //     getObjcard.likes.forEach(elm => {                                                   //обходим каждый элемент в объекте likes
-  //       if (elm._id === myId) {                                                           //если id равны
-  //         placesLikeIcon.classList.add('places__like-icon_active');                       //сделать лайк активным
-  //       }
-  //     })
-  //   }
-  // }
-
-  // //Функция открытие модального окна для просмотра изображений
-  // //===========================================================================================
-  // _showImage(url, name) {
-  //   const popupViewerContainer = document.querySelector('#popup-viewer');        //находим форму мод. окна
-  //   const popupViewerImage = popupViewerContainer.querySelector('.popup__image');//в этой форме ищем элемент для картинки
-  //   const popupViewerTitle = popupViewerContainer.querySelector('.popup__title');// в тойже форме ище элемент для наименование
-
-
-  //   popupViewerImage.setAttribute('src', url);                                 //присваиваем урл атрибут
-  //   popupViewerImage.setAttribute('alt', 'Изображение ' + name);
-
-  //   popupViewerTitle.textContent = name;                                       //присваиваем название изображения
-  //   this._openPopup(popupViewerContainer);
-  //   //openPopup(popupViewerContainer);                                           //открываем попап "просомтр фотографии"
-  // }
-
-
-
-
 }
