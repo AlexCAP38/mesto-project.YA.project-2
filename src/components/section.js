@@ -1,12 +1,20 @@
-import Api from "./api";
-import Card from "./card";
-
 export default class Section {
-  constructor({ items, renderer }) {
-    this.items = items;
-    this.renderer = renderer;
-//console.log(this.items)
+  constructor({ renderer }, places) {
+
+    this._renderer = renderer;
+    this._selectorContainer = places;
+
   }
 
+  addItem(item) {
+    this._selectorContainer.prepend(item);                           //добавит карточку на страницу
+  }
+
+  renderer(infoCards) {
+
+    for (let i = 0; i < infoCards.length; i++) {                                //обойдем массив карточек
+      this.addItem(this._renderer(infoCards[i]));
+    }
+  }
 
 }

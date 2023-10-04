@@ -1,9 +1,12 @@
+//import { config } from "./variable.js";
+
 export default class Api {
   constructor(config) {
     this._urlUser = config.urlUser;
     this._urlCards = config.urlCards;
     this._token = config.token;
   }
+
   //===========================================================================================
   getUserProfile = () => {                                        //получение информации о профиле от сервера
     return fetch(this._urlUser, {                                 //вернуть результат запроса

@@ -1,9 +1,9 @@
 export default class UserInfo {
-  constructor({ title, subtitle, getInfo, sendIfo }) {
+  constructor({ title, subtitle, getInfo, sendInfo }) {
     this._title = title;
     this._subtitle = subtitle;
     this._getInfo = getInfo;
-    this._sendInfo = sendIfo;
+    this._sendInfo = sendInfo;
   }
 
   getUserInfo() {
@@ -29,7 +29,7 @@ export default class UserInfo {
         this._subtitle.textContent = result.about;
 
         //closePopup(popupEditprofile);                                                 //закрываем попап
-        popup.closePopup(popupEditprofile);
+
       })
       .catch((error) => {
         console.log('Ошибка: ' + error);
