@@ -65,10 +65,17 @@ formElementEditProfile.addEventListener('submit', function formSubmitHandler(evt
 
   formElementEditProfile.querySelector('.popup__button').textContent = 'Сохранение...'; //типа прогресс бар при нажантие на кнопку меняем название кнопки
 
-  sendUserProfile(nameInput.value, jobInput.value)                                  //отправка информации о пользователе на сервер
+  sendUserProfile(nameInput.value, jobInput.value)                                  //отправка информации на пользователе на сервер
     .then((result) => {
-      profileTitle.textContent = result.name;                                       //присваивает элементам на страницы значение из ответа сервера
-      profileSubtitle.textContent = result.about;
+
+      getUserProfile()                                                              //запросили новую информацию пользователя с сервера
+        .then((response) => {
+          profileTitle.textContent = response.name;                                   //присваивает элементам на страницы значение из ответа сервера
+          profileSubtitle.textContent = response.about;
+        })
+        .catch((error) => {
+          console.log('Ошибка: ' + error);
+        });
 
       closePopup(popupEditprofile);                                                 //закрываем попап
     })
@@ -87,6 +94,7 @@ const popupEditAvatar = document.querySelector('#popup-edit-avatar');        //�
 const formEditAvatar = document.querySelector('#popup__form-edit-avatar');   //элемент форма
 
 buttonEditAvatar.addEventListener('click', () => {
+  formEditAvatar.querySelector('button').textContent = 'Сохранить';
 
   popupEditAvatar.querySelector('.popup__button').disabled = true;               //отключим кнопку т.к. поля не валидны
   popupEditAvatar.querySelector('.popup__button').classList.add('popup__button_active');
@@ -107,10 +115,7 @@ formEditAvatar.addEventListener('submit', (evt) => {
     })
     .catch((error) => {
       console.log('Ошибка отправки: ' + error);
-    })
-    .finally(() => {
-      setTimeout(delay => formEditAvatar.querySelector('button').textContent = 'Сохранить', 3000) //пауза для того чтоб название появлялось после закрытия попап
-    })
+    });
 });
 
 
@@ -140,7 +145,7 @@ export const places = document.querySelector('.places');                      //
 
 formNewcard.addEventListener('submit', function formSubmitHandler(evt) {      //событие при нажатие кнопки "сохранить"
   evt.preventDefault();                                                       //пропускает отправку и продолжает выполнть следующий код
-  evt.target.querySelector('.popup__button').textContent = 'Сохранение...';
+
   sendCardsSRV(nameCardInput.value, urlInput.value)                           //отправит информацию на сревер
     .then((result) => {
       places.prepend(createCard(result));                                     //ответ сервера закидываем в фиункцию добваления новой карточки
@@ -148,40 +153,29 @@ formNewcard.addEventListener('submit', function formSubmitHandler(evt) {      //
     })
     .catch((error) => {
       console.log('Ошибка отправки: ' + error);
-    })
-    .finally(() => {
-      setTimeout(delay => evt.target.querySelector('.popup__button').textContent = 'Сохранить', 3000);  //пауза для того чтоб название появлялось после закрытия попап
-    })
+    });
 });
 
 //===========================================================================================
 //Блок подтверждения удаления карточки
 //===========================================================================================
-const popupConfirmDelete = document.querySelector('#popup-confirm-delete-card');    //найдет попап
-let deletingCard = undefined;
-
 export const deleteCard = (trashLikeIcon) => {
+  const popupConfirmDelete = document.querySelector('#popup-confirm-delete-card');      //найдет попап
   openPopup(popupConfirmDelete);                                                        //откроет попап
-  return deletingCard = trashLikeIcon.closest('div')
+
+  popupConfirmDelete.querySelector('#popup__form-confirm-delete-card')                  //найтдет форму в попапе
+    .addEventListener('submit', (event) => {                                            //событие на сабмит формы
+      event.preventDefault();                                                           //пропускает отправку и продолжает выполнть следующий код
+      deleteCardsSRV(trashLikeIcon.closest('div').id)                                   //отправит запрос на удаление карточик
+        .then(() => {
+          trashLikeIcon.closest('div').remove();                                        //при нажатие на икону найти родителя по тегу и удалить его
+          closePopup(popupConfirmDelete);                                               //закрываем попап
+        })
+        .catch((error) => {
+          console.log('Ошибка удаления карточки: ' + error);
+        });
+    });
 }
-
-popupConfirmDelete.querySelector('#popup__form-confirm-delete-card')                //найтдет форму в попапе
-  .addEventListener('submit', (event) => {                                            //событие на сабмит формы
-
-    event.preventDefault();                                                           //пропускает отправку и продолжает выполнть следующий код
-
-    deleteCardsSRV(deletingCard.id)                                                   //отправит запрос на удаление карточик
-      .then(() => {
-        deletingCard.remove();                                                        //при нажатие на икону найти родителя по тегу и удалить его
-        closePopup(popupConfirmDelete);                                               //закрываем попап
-      })
-      .catch((error) => {
-        console.log('Ошибка удаления карточки: ' + error);
-      });
-  });
-
-
-
 
 //===========================================================================================
 //Валидация инпутов, проверка на корректность ввода
