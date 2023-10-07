@@ -1,4 +1,4 @@
-//import { config } from "./variable.js";
+import { config } from "../utils/constants.js";
 
 export default class Api {
   constructor(config) {

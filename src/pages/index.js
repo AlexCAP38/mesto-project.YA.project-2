@@ -1,20 +1,19 @@
 import '../pages/index.css';
-import Popup from './popup.js';
-import FormValidator from './formvalidator.js';
-import Api from './api.js';
-import Card from './card.js';
-import Section from './section.js';
-import PopupWithImage from './popupwithimage.js';
-import PopupWithForm from './popupwithform.js';
-import UserInfo from './userinfo.js';
+import Popup from '../components/Popup.js';
+import FormValidator from '../components/Formvalidator.js';
+import Api from '../components/api.js';
+import Card from '../components/Card.js';
+import Section from '../components/Section.js';
+import PopupWithImage from '../components/Popupwithimage.js';
+import PopupWithForm from '../components/Popupwithform.js';
+import UserInfo from '../components/Userinfo.js';
 import {
   templateCard,
   config,
   places,
   popupViewerContainer
-} from './variable.js';
+} from '../utils/constants.js';
 
-//
 
 //БЛОК наполнение страницы
 //===========================================================================================
@@ -60,6 +59,7 @@ Promise.all([api.getUserProfile(), api.getCardsSRV()])
     //   places.prepend(card.createCard(element));                           //добавит карточку на страницу
     // })
     section.renderer(infoCards);
+    console.log(infoCards)
   })
   .catch((error) => {
     console.log('-->>   ' + error + '   <<-- ошибка в коде !!!');
@@ -79,13 +79,6 @@ const profileSubtitle = document.querySelector('.profile__subtitle'); //элем
 const profileAvatar = document.querySelector('.profile__avatar');     //элемент картинка аватара
 export const popupInputName = document.querySelector('#popup__input-name');  //поле ввода "имени" в модальном окне "ред.профиля"
 export const popupInputAbout = document.querySelector('#popup__input-about');//поле ввода "о себе"  в модальном окне "ред.профиля"
-
-//**************************
-//* я с трудом понимаю что должны делать методы в ТЗ
-//* для меня чтение тз мучение какое-то
-//* так что код получился помойкой =((
-//***************************
-
 
 profileEditButton.addEventListener('click', function () {                   //отслеживаем событие по нажатию на кнопку "редактирования профиля"
   const popup = new Popup(popupEditprofile);
@@ -127,6 +120,8 @@ formElementEditProfile.addEventListener('submit', function formSubmitHandler(evt
 
 
   userinfo.setUserInfo(nameInput.value, jobInput.value);
+
+
   // api.sendUserProfile(nameInput.value, jobInput.value)                                  //отправка информации о пользователе на сервер
   //   .then((result) => {
   //     profileTitle.textContent = result.name;                                       //присваивает элементам на страницы значение из ответа сервера
@@ -207,12 +202,15 @@ const nameCardInput = formNewcard.querySelector('#popup__input-name');        //
 const urlInput = formNewcard.querySelector('#popup__input-link');
 
 formNewcard.addEventListener('submit', function formSubmitHandler(evt) {      //событие при нажатие кнопки "сохранить"
-  const popup = new Popup(popupNewCard);
   evt.preventDefault();                                                       //пропускает отправку и продолжает выполнть следующий код
+
+  const popup = new Popup(popupNewCard);
   evt.target.querySelector('.popup__button').textContent = 'Сохранение...';
+
   api.sendCardsSRV(nameCardInput.value, urlInput.value)                       //отправит информацию на сревер
     .then((result) => {
-      section.renderer(result);
+
+      section.renderer([result]);
       //places.prepend(card.createCard(result));                   //ответ сервера и шаблон для создания карточки закидываем в метод добваления новой карточки
       //closePopup(popupNewCard);                                               //закрываем попап
       popup.closePopup();

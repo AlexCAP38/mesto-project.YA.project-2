@@ -1,4 +1,4 @@
-import { userId } from './index.js';
+import { userId } from '../pages/index.js';
 
 export default class Card {
 
