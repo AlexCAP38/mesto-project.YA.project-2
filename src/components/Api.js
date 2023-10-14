@@ -1,18 +1,13 @@
-import { config } from "../utils/constants.js";
-
 export default class Api {
   constructor(config) {
-    this._urlUser = config.urlUser;
-    this._urlCards = config.urlCards;
-    this._token = config.token;
+    this._baseUrl = config.baseUrl;
+    this._header = config.headers;
   }
 
   //===========================================================================================
   getUserProfile = () => {                                        //получение информации о профиле от сервера
-    return fetch(this._urlUser, {                                 //вернуть результат запроса
-      headers: {
-        authorization: this._token
-      }
+    return fetch(`${this._baseUrl}/users/me`, {                                 //вернуть результат запроса
+      headers: this._header
     })
       .then((response) => {                                        //получили информацию от сервера
         return this._checkAnswer(response);                              //проверка запроса
@@ -20,12 +15,9 @@ export default class Api {
   }
   //===========================================================================================
   sendUserProfile = (nameInputValue, jobInputValue) => {          //Отправка информации на сервере из профиля
-    return fetch(this._urlUser, {                                 //вернуть результат запроса
+    return fetch(`${this._baseUrl}/users/me`, {                                 //вернуть результат запроса
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._header,
       body: JSON.stringify({
         name: nameInputValue,
         about: jobInputValue
@@ -37,10 +29,8 @@ export default class Api {
   }
   //===========================================================================================
   getCardsSRV = () => {                                             //получение информации о карточке от сервера
-    return fetch(this._urlCards, {                                  //вернуть результат запроса
-      headers: {
-        authorization: this._token
-      }
+    return fetch(`${this._baseUrl}/cards`, {                                  //вернуть результат запроса
+      headers: this._header
     })
       .then((response) => {                                         //получили информацию от сервера
         return this._checkAnswer(response);                         //проверка запроса
@@ -48,12 +38,9 @@ export default class Api {
   }
 
   sendCardsSRV = (imageName, imageLink) => {                         //Отправка карточки на сервер
-    return fetch(this._urlCards, {                                   //вернуть результат запроса
+    return fetch(`${this._baseUrl}/cards`, {                                   //вернуть результат запроса
       method: 'POST',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._header,
       body: JSON.stringify({
         name: imageName,
         link: imageLink
@@ -65,11 +52,9 @@ export default class Api {
   }
   //===========================================================================================
   deleteCardsSRV = (idCard) => {                                      //Удаление карточки с сервера
-    return fetch(`${config.urlCards}/${idCard}`, {
+    return fetch(`${this._baseUrl}/cards/${idCard}`, {
       method: 'DELETE',
-      headers: {
-        authorization: config.token
-      }
+      headers: this._header
     })
       .then((response) => {                                           //получили информацию от сервера
         return this._checkAnswer(response);                           //проверка запроса
@@ -77,7 +62,7 @@ export default class Api {
   }
   //===========================================================================================
   sendlikeSRV = (idCard) => {                                         //отправка лайка на сервер
-    return fetch(`${config.urlCards}/likes/${idCard}`, {
+    return fetch(`${this._baseUrl}/cards/likes/${idCard}`, {
       method: 'PUT',
       headers: {
         authorization: config.token
@@ -89,11 +74,9 @@ export default class Api {
   }
   //===========================================================================================
   deletelikeSRV = (idCard) => {                                       //удаление лайка с сервера
-    return fetch(`${config.urlCards}/likes/${idCard}`, {
+    return fetch(`${this._baseUrl}/cards/likes/${idCard}`, {
       method: 'DELETE',
-      headers: {
-        authorization: config.token
-      }
+      headers: this._header
     })
       .then((response) => {                                          //получили ответ об отправке
         return this._checkAnswer(response);                          //проверка
@@ -101,12 +84,9 @@ export default class Api {
   }
   //===========================================================================================
   sendAvatar = (input) => {                                           //отправка запроса на обновления аватарки
-    return fetch(`${config.urlUser}/avatar`, {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        authorization: config.token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._header,
       body: JSON.stringify({
         avatar: input.value
       })

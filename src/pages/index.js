@@ -9,17 +9,21 @@ import PopupWithForm from '../components/Popupwithform.js';
 import UserInfo from '../components/Userinfo.js';
 import {
   templateCard,
-  config,
   places,
   popupViewerContainer
 } from '../utils/constants.js';
-
 
 //БЛОК наполнение страницы
 //===========================================================================================
 export let userId = undefined;                                       //мой ID получит когда загрузит информацию о пользователе
 
-const api = new Api(config);
+const api = new Api({
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-28',
+  headers: {
+    authorization: 'bd02b005-4f65-48b7-9e39-fbb8e07fc766',
+    'Content-Type': 'application/json'
+  }
+});
 
 const card = new Card(templateCard, {
   deletelikeSRV: (placesLikeIcon) => { return api.deletelikeSRV(placesLikeIcon) },
