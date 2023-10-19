@@ -2,19 +2,17 @@ export default class Section {
   constructor({ renderer }, places) {
 
     this._renderer = renderer;
-    this._selectorContainer = places;
+    this._container = places;
 
   }
 
   addItem(item) {
-    this._selectorContainer.prepend(item);                           //добавит карточку на страницу
+    this._container.prepend(item);                           //добавит карточку на страницу
   }
 
   renderer(infoCards) {
-
-    for (let i = 0; i < infoCards.length; i++) {                                //обойдем массив карточек
-      this.addItem(this._renderer(infoCards[i]));
-    }
+    infoCards.forEach((element) => {                          //обойдем массив карточек
+      this.addItem(this._renderer(element));
+    });
   }
-
 }

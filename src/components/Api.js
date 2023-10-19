@@ -64,9 +64,7 @@ export default class Api {
   sendlikeSRV = (idCard) => {                                         //отправка лайка на сервер
     return fetch(`${this._baseUrl}/cards/likes/${idCard}`, {
       method: 'PUT',
-      headers: {
-        authorization: config.token
-      }
+      headers: this._header
     })
       .then((response) => {                                           //получили ответ об отправке
         return this._checkAnswer(response);                           //проверка

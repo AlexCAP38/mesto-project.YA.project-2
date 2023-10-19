@@ -1,22 +1,17 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithImage extends Popup {
-  constructor(selectorPopup){
-    super(selectorPopup)
-    this._selectorPopup = selectorPopup;
+  constructor(popupSelector) {
+    super(popupSelector);
+    this._popupViewerImage = this._popup.querySelector('.popup__image');               //в форме ищем элемент для картинки
+    this._popupViewerTitle = this._popup.querySelector('.popup__title');               // в форме ище элемент для наименование
   }
 
-openPopup(url, name){
-  super.openPopup();
+  open(url, name) {
+    super.openPopup();
 
-  const popupViewerImage = this._selectorPopup.querySelector('.popup__image');//в этой форме ищем элемент для картинки
-  const popupViewerTitle = this._selectorPopup.querySelector('.popup__title');// в тойже форме ище элемент для наименование
-
-  popupViewerImage.setAttribute('src', url);                                 //присваиваем урл атрибут
-  popupViewerImage.setAttribute('alt', 'Изображение ' + name);
-
-  popupViewerTitle.textContent = name;                                       //присваиваем название изображения
-
-}
-
+    this._popupViewerImage.setAttribute('src', url);                                    //присваиваем урл атрибут
+    this._popupViewerImage.setAttribute('alt', 'Изображение ' + name);                  //присваиваем алт атрибут
+    this._popupViewerTitle.textContent = name;                                          //присваиваем название изображения
+  }
 }
