@@ -58,8 +58,7 @@ export default class Card {
       });
   }
 
-  _setEventListeners = (getObjcard) => {
-
+  _setEventListeners = () => {
     this._placesLikeIcon.addEventListener('click', (event) => {
       if (event.target.classList.contains('places__like-icon_active')) {               //Если иконка содержит класс (активная)
         this._deleteLikeSRV(event.target);                          //вызвать метод удаления лайка
@@ -68,9 +67,10 @@ export default class Card {
       }
     });
 
-    this._placesImage.addEventListener('click', () => {                                        //событие по нажатию на фотографию
-      this._handleCardClick(getObjcard.link, getObjcard.name);                                 //при нажание на картинку вызываем функцию открытия попапа
-      //this._handleCardClick(this._placesImage.src, getObjcard.name);                         //при нажание на картинку вызываем функцию открытия попапа
+    this._placesImage.addEventListener('click', (event) => {                                        //событие по нажатию на фотографию
+      this._urlImage = event.target.src;
+      this._titleImage = event.target.closest('.places__card').querySelector('.places__title').textContent;
+      this._handleCardClick(this._urlImage, this._titleImage);                         //при нажание на картинку вызываем функцию открытия попапа
     });
 
     this._trashLikeIcon.addEventListener('click', (event) => {                                      //событие по клику Удаление карточки

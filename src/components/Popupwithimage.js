@@ -9,7 +9,6 @@ export default class PopupWithImage extends Popup {
 
   open(url, name) {
     super.openPopup();
-
     this._popupViewerImage.setAttribute('src', url);                                    //присваиваем урл атрибут
     this._popupViewerImage.setAttribute('alt', 'Изображение ' + name);                  //присваиваем алт атрибут
     this._popupViewerTitle.textContent = name;                                          //присваиваем название изображения

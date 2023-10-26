@@ -1,35 +1,35 @@
 export default class FormValidator {
-  constructor({ ...selectorList }) {
+  constructor({ ...selectorList }, nameForm) {
     this._selectorList = selectorList;
+    this._nameForm = nameForm;                                                              //имя формы
   }
 
-  enableValidation(formElement) {                                                         //основаня функция проверки
-
-    this._formElement = document.querySelector(formElement);                                                      //полученная форма
-    //this._formElement = formElement;                                                      //полученная форма
-    this._setEventListeners(formElement);                                                 //функция поиска инпутов в форме
+  enableValidation() {                                                                      //основаня функция проверки
+    this._formElement = document.querySelector(this._nameForm);                             //полученная форма
+    this._setEventListeners();                                                              //навешиваем события
 
   }
 
-  _setEventListeners() {                                                                  //Ищет инпуты в форме, как аргумент принимает одну форму
-    this._inputList = Array.from(this._formElement.querySelectorAll(this._selectorList.inputSelector));//ищем все инпуты в форме
+  _setEventListeners() {                                                                  //Установит слушатели на инпуты и проверит их валидность
     this._buttonElement = this._formElement.querySelector(this._selectorList.submitButtonSelector);    //находим кнопку в форме
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._selectorList.inputSelector));//ищем все инпуты в форме
+
+    this._toggleButtonState();
 
     this._inputList.forEach((element) => {                                                //обойдет все инпуты из массива
-
       element.addEventListener('input', () => {                                           //Событие по вводу
-        this.isValid(element, this._selectorList);                                        //Проверяет введенные данные на валидность
-        this._toggleButtonState(this._selectorList);                                      //При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
+        this.isValid(element);                                        //Проверяет введенные данные на валидность
+        this._toggleButtonState();                                      //При вводе проверит все инпуты в форме на валидность в зависимости от суммарного состояния всех инпутов активирует либо деактивирует кнопку Submit
       });
 
     });
   }
 
-                                                                                  //Отвечает за проверку введенных данных и выдачу сообщенией об ошибках, принимает аргумент один инпут
-  isValid(inputElement, selectorList) {                                           //принемаем один инпут, и объект из селекторов
+  //Отвечает за проверку введенных данных и выдачу сообщенией об ошибках, принимает аргумент один инпут
+  isValid(inputElement) {                                                         //принемаем один инпут, и объект из селекторов
 
     this._fieldErrorMessange = inputElement                                       //Находит поле для вывода ошибки
-      .closest(selectorList.formSelector)                                         //находит родителя инпута по классу
+      .closest(this._selectorList.formSelector)                                   //находит родителя инпута по классу
       .querySelector(`#${inputElement.id}-error`);                                //ищет в форме "поле для ошибки" по id используя шаблонные строки
 
     if (!inputElement.validity.valid) {                                           //если состонияние инпута.valid false тогда будет выдавать сообщение об ошибке из validationMessage
@@ -39,20 +39,20 @@ export default class FormValidator {
       } else {
         inputElement.setCustomValidity("");                                       //убрать кастомное сообащение об ошибке
       }
-
-      this._showInputError(inputElement, selectorList);                           //Показать ошибку, передаем функции аргументы поле для ошибки и ошибку текущего инпута
+      this._showInputError(inputElement);                           //Показать ошибку, передаем функции аргументы поле для ошибки и ошибку текущего инпута
     } else {
-      this._hidenInputError(inputElement, selectorList);
+      this._hidenInputError(inputElement);
     }
   }
 
-  _toggleButtonState(selectorList) {                                             //Дейстиве с кнопкой SUBMIT если формы не валидны
+  _toggleButtonState() {                                             //Дейстиве с кнопкой SUBMIT если формы не валидны
+
     if (this._hasInvalidInput()) {                                               //если финкция вернет true занчит в полях ввода есть ошибки нужно заблокировать кнопку
       this._buttonElement.disabled = true;
-      this._buttonElement.classList.add(selectorList.inactiveButtonClass);
+      this._buttonElement.classList.add(this._selectorList.inactiveButtonClass);
     } else {
       this._buttonElement.disabled = false;                                                     // иначе сделай кнопку активной
-      this._buttonElement.classList.remove(selectorList.inactiveButtonClass);
+      this._buttonElement.classList.remove(this._selectorList.inactiveButtonClass);
     }
 
   }
@@ -60,21 +60,19 @@ export default class FormValidator {
   _hasInvalidInput() {                                                                     //Проверит инпуты в форме на валидность, функция принимает аргумент список инпутов ввиде массива
 
     return this._inputList.some((elm) => {                                                 //если все инпунты валидны, вернется true
-
       return !elm.validity.valid;                                                         //возвращает свойство элемента valid
-
     });
   }
 
-    _showInputError(inputElement, selectorList) {                                                                 //Показать сообщение об ошибке
+  _showInputError(inputElement) {                                                                 //Показать сообщение об ошибке
     this._fieldErrorMessange.textContent = inputElement.validationMessage;
-    inputElement.classList.add(selectorList.inputErrorClass);
-    this._fieldErrorMessange.classList.add(selectorList.errorClass);
+    inputElement.classList.add(this._selectorList.inputErrorClass);
+    this._fieldErrorMessange.classList.add(this._selectorList.errorClass);
   }
 
-    _hidenInputError(inputElement, selectorList) {                                                                  //Скрыть сообщение об ошибки
+  _hidenInputError(inputElement) {                                                                  //Скрыть сообщение об ошибки
     this._fieldErrorMessange.textContent = '';
-    this._fieldErrorMessange.classList.remove(selectorList.errorClass);
-    inputElement.classList.remove(selectorList.inputErrorClass);
+    this._fieldErrorMessange.classList.remove(this._selectorList.errorClass);
+    inputElement.classList.remove(this._selectorList.inputErrorClass);
   }
 }

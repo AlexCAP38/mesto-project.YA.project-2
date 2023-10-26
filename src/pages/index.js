@@ -1,5 +1,4 @@
 import '../pages/index.css';
-import Popup from '../components/Popup.js';
 import FormValidator from '../components/Formvalidator.js';
 import Api from '../components/Api.js';
 import Card from '../components/Card.js';
@@ -10,13 +9,15 @@ import UserInfo from '../components/Userinfo.js';
 import {
   templateCard,
   places,
-  popupViewerContainer
+  profileAddButton,
+  buttonEditAvatar,
+  profileEditButton,
+  options
 } from '../utils/constants.js';
+//export let userId = undefined;                                       //мой ID получит когда загрузит информацию о пользователе
 
 //БЛОК Создание Экземпляров
 //===========================================================================================
-export let userId = undefined;                                       //мой ID получит когда загрузит информацию о пользователе
-
 const useApi = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-28',
   headers: {
@@ -31,6 +32,21 @@ const userInfo = new UserInfo({                                         //объ
   avatarSelector: '.profile__avatar'
 })
 
+const createCard = new Card(templateCard, {
+  deletelikeSRV: (placesLikeIcon) => { return useApi.deletelikeSRV(placesLikeIcon) },
+  sendlikeSRV: (placesLikeIcon) => { return useApi.sendlikeSRV(placesLikeIcon) },
+  handleCardClick: (url, name) => { showImage.open(url, name) },
+  deleteCard: (evnetClickIcon) => {
+    popupConfirmDelete._cbApi(evnetClickIcon);
+    popupConfirmDelete.openPopup(); popupConfirmDelete.setEventListeners();
+  }
+});
+
+const section = new Section({
+  renderer: (element) => { return createCard.createCard(element) }
+},
+  places);
+
 Promise.all([useApi.getUserProfile(), useApi.getCardsSRV()])
   .then(([infoUser, infoCards]) => {                                 //получаем ответы ввиде массивов
     userInfo.setUserInfo(infoUser);
@@ -38,93 +54,63 @@ Promise.all([useApi.getUserProfile(), useApi.getCardsSRV()])
   })
   .catch((error) => {
     console.log('-->>   ' + error + '   <<-- ошибка в коде !!!');
-  })
-
-
-const createCard = new Card(templateCard, {
-  deletelikeSRV: (placesLikeIcon) => { return useApi.deletelikeSRV(placesLikeIcon) },
-  sendlikeSRV: (placesLikeIcon) => { return useApi.sendlikeSRV(placesLikeIcon) },
-  handleCardClick: (url, name) => { showImage.open(url, name) },
-  deleteCard: (evnetClickIcon) => {
-    popupConfirmDelete._cbApi(evnetClickIcon)
-    popupConfirmDelete.openPopup(); popupConfirmDelete.setEventListeners();
-  }
-});
+  });
 
 const showImage = new PopupWithImage('#popup-viewer');                                //Создаем экземпляр для отображения картинок
 showImage.setEventListeners();
 
-
-const section = new Section({ renderer: (element) => { return createCard.createCard(element) } }, places);
-
-const formValidator = new FormValidator({                                                              //Основная проверка
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_active',
-  errorClass: 'popup__errorMessange_active',
-  inputErrorClass: 'popup__input_error'
-});
-
 //===========================================================================================
 //БЛОК модальное окно "редактирования профиля"
 //===========================================================================================
-// const profileAvatar = document.querySelector('.profile__avatar');                                       //элемент картинка аватара
-
 const popupWithFormUserProfile = new PopupWithForm('#edit-profile',
   {
-    cbApi: (data) => {
-      //БЛОК сохранения и отправка формы "редактирования профиля"
-      //===========================================================================================
-      const formElementEditProfile = document.forms['popup__form-edit-profile'];                             //ищем форму отправки попапа "редактирования профиля"
+    cbApi: (data) => {                                                                                        //БЛОК сохранения и отправка формы "редактирования профиля"
+
+      const formElementEditProfile = document.forms['popup__form-edit-profile'];                              //ищем форму отправки попапа "редактирования профиля"
       const nameInput = formElementEditProfile.querySelector('#popup__input-name');                           //в ней ищем инпуты
       const jobInput = formElementEditProfile.querySelector('#popup__input-about');
 
       const profileTitle = document.querySelector('.profile__title');                                         //элемент имя
       const profileSubtitle = document.querySelector('.profile__subtitle');                                   //элемент субтайтл
 
-      formElementEditProfile.addEventListener('submit', function formSubmitHandler(evt) { //отслеживаем событие нажатия кнопки сохранить
-        evt.preventDefault();                                                             //пропускает собтыие сабмит и продолжает выполнть следующий код
+      formElementEditProfile.addEventListener('submit', function formSubmitHandler(evt) {                     //отслеживаем событие нажатия кнопки сохранить
+        evt.preventDefault();                                                                                 //пропускает событие сабмит и продолжает выполнть следующий код
 
-        formElementEditProfile.querySelector('.popup__button').textContent = 'Сохранение...'; //типа прогресс бар при нажантие на кнопку меняем название кнопки
+        formElementEditProfile.querySelector('.popup__button').textContent = 'Сохранение...';                 //типа прогресс бар при нажантие на кнопку меняем название кнопки
 
         useApi.sendUserProfile(nameInput.value, jobInput.value)
           .finally(() => {
             profileTitle.textContent = nameInput.value;
             profileSubtitle.textContent = jobInput.value;
             popupWithFormUserProfile.closePopup();
+            formElementEditProfile.removeEventListener('submit', formSubmitHandler);
           });
       });
     }
   });
 
+const formValidatorUserProfile = new FormValidator(options, '#edit-profile');                           //создание экземпляра валидации формы
 
-const profileEditButton = document.querySelector('.profile__edit-button');                              //элемент кнопка
 profileEditButton.addEventListener('click', () => {                                                     //событие по нажатию на кнопку "редактирования профиля"
-  formValidator.enableValidation('#edit-profile');                                                     //Валидация инпутов, проверка на корректность ввода
+  formValidatorUserProfile.enableValidation();                                                          //Валидация инпутов, проверка на корректность ввода
 
-  popupWithFormUserProfile.setEventListeners();                                                         //Событие на закрытие окна (клик на всю форму модального окна)
-
-  const popupInputName = document.querySelector('#popup__input-name');                             //поле ввода "имени" в модальном окне "ред.профиля"
-  const popupInputAbout = document.querySelector('#popup__input-about');                           //поле ввода "о себе"  в модальном окне "ред.профиля"
-  popupInputName.value = userInfo.getUserInfo().name;                                                 //обновляем контект каждый раз при открытие попапа
+  const popupInputName = document.querySelector('#popup__input-name');                                  //поле ввода "имени" в модальном окне "ред.профиля"
+  const popupInputAbout = document.querySelector('#popup__input-about');                                //поле ввода "о себе"  в модальном окне "ред.профиля"
+  popupInputName.value = userInfo.getUserInfo().name;                                                   //обновляем контект каждый раз при открытие попапа
   popupInputAbout.value = userInfo.getUserInfo().about;
 
+  popupWithFormUserProfile.setEventListeners();                                                         //Событие на закрытие окна (клик на всю форму модального окна)
   popupWithFormUserProfile.openPopup();
 });
 
-
 //БЛОК Обновление аватарки на сервере
 //===========================================================================================
-const formEditAvatar = document.forms['popup__form-edit-avatar'];           //элемент форма
-const buttonEditAvatar = document.querySelector('.profile__edit-avatar');    //элемент кнопка обновления аватарки
-const popupEditAvatar = document.querySelector('#popup-edit-avatar');        //элемент попап
-const btnEditAvatar = formEditAvatar.querySelector('button');
-
 const popupWithFormEditAvatar = new PopupWithForm('#popup-edit-avatar', {
   cbApi: () => {
+    const formEditAvatar = document.forms['popup__form-edit-avatar'];           //элемент форма
+    const btnEditAvatar = formEditAvatar.querySelector('button');
 
-    formEditAvatar.addEventListener('submit', (evt) => {
+    formEditAvatar.addEventListener('submit', function formSubmitHandler(evt) {
       evt.preventDefault();                                                         //пропускает собтыие сабмит и продолжает выполнть следующий код
 
       btnEditAvatar.textContent = 'Сохранение...';
@@ -140,15 +126,18 @@ const popupWithFormEditAvatar = new PopupWithForm('#popup-edit-avatar', {
         })
         .finally(() => {
           btnEditAvatar.textContent = 'Сохранить';
+          formEditAvatar.removeEventListener('submit', formSubmitHandler);
         })
     });
   }
 });
 
+const formValidatorEditAvatar = new FormValidator(options, '#popup__form-edit-avatar');                            //создание экземпляра валидации формы
+
 buttonEditAvatar.addEventListener('click', () => {
-  formValidator.enableValidation('#popup__form-edit-avatar');
-  popupWithFormEditAvatar.openPopup();
+  formValidatorEditAvatar.enableValidation();
   popupWithFormEditAvatar.setEventListeners();
+  popupWithFormEditAvatar.openPopup();
 });
 
 //===========================================================================================
@@ -156,66 +145,65 @@ buttonEditAvatar.addEventListener('click', () => {
 //===========================================================================================
 const popupWithFormNewCard = new PopupWithForm('#popup-new-card',
   {
-    cbApi: () => {
-
-      //событие по нажатию на кнопку сохранить и добавления новой карточки
-      //===========================================================================================
-      const formNewcard = document.forms['popup__form-new-card'];          //находим форму для добавления новых карточек
-      const nameCardInput = formNewcard.querySelector('#popup__input-name');        //в форме ищем инпуты куда будут вводить имя карточки и url
+    cbApi: () => {                                                                      //событие по нажатию на кнопку сохранить и добавления новой карточки
+      const formNewcard = document.forms['popup__form-new-card'];                       //находим форму для добавления новых карточек
+      const nameCardInput = formNewcard.querySelector('#popup__input-name');            //в форме ищем инпуты куда будут вводить имя карточки и url
       const urlInput = formNewcard.querySelector('#popup__input-link');
 
-      formNewcard.addEventListener('submit', function formSubmitHandler(evt) {      //событие при нажатие кнопки "сохранить"
-        evt.preventDefault();                                                       //пропускает отправку и продолжает выполнть следующий код
+      formNewcard.addEventListener('submit', function formSubmitHandler(evt) {          //событие при нажатие кнопки "сохранить"
+        evt.preventDefault();                                                           //пропускает отправку и продолжает выполнть следующий код
 
         evt.target.querySelector('.popup__button').textContent = 'Сохранение...';
 
-        useApi.sendCardsSRV(nameCardInput.value, urlInput.value)                       //отправит информацию на сревер
-          .then((result) => {
-
-            section.renderer([result]);
-            popupWithFormNewCard.closePopup();                                                         //закрываем попап
+        useApi.sendCardsSRV(nameCardInput.value, urlInput.value)                        //отправим запрос на сервер о добавление новой карточки
+          .then((result) => {                                                           //при успешно добавление
+            section.renderer([result]);                                                 //добавим карточку в дом
+            popupWithFormNewCard.closePopup();                                          //закрываем попап
           })
           .catch((error) => {
             console.log('Ошибка отправки: ' + error);
           })
           .finally(() => {
             evt.target.querySelector('.popup__button').textContent = 'Сохранить'
+            formNewcard.removeEventListener('submit', formSubmitHandler);
           })
       });
 
     }
   });
 
+const formValidatorNewCard = new FormValidator(options, '#popup-new-card');                            //создание экземпляра валидации формы
 
-  const profileAddButton = document.querySelector('.profile__add-button');      //находим кнопку в доме
-  profileAddButton.addEventListener('click', () => {                      //Открытие попапа при нажатие на кнопку
-    // popupNewCard.querySelector('.popup__button').disabled = true;               //отключим кнопку т.к. поля не валидны
-  // popupNewCard.querySelector('.popup__button').classList.add('popup__button_active');
+profileAddButton.addEventListener('click', () => {                                                    //Событие по нажатию на кнопку "добавление новой карточки"
+  formValidatorNewCard.enableValidation();                                                            //Проверка формы
   popupWithFormNewCard.setEventListeners();
-  formValidator.enableValidation('#popup-new-card');
-  popupWithFormNewCard.openPopup();                                           //открываем попап
+  popupWithFormNewCard.openPopup();                                                                   //Открывает попап
 });
 
 //===========================================================================================
 //Блок подтверждения удаления карточки
 //===========================================================================================
 
-const formConfirmDelete = document.querySelector('#popup-confirm-delete-card');   //элемент попап
-const btnConfirmDelete = document.forms['popup__form-confirm-delete-card'];                            //найтдет форму
-
 const popupConfirmDelete = new PopupWithForm('#popup-confirm-delete-card', {
   cbApi: (evnetClickIcon) => {
-    btnConfirmDelete.addEventListener('submit', (event) => {                                            //событие на сабмит формы
-      event.preventDefault();                                                           //пропускает отправку и продолжает выполнть следующий код
-      useApi.deleteCardsSRV(evnetClickIcon.target.closest('.places__card').id)                                                   //отправит запрос на удаление карточик
-        .then(() => {
 
+    const btnConfirmDelete = document.forms['popup__form-confirm-delete-card'];                             //найтдет форму
+
+    btnConfirmDelete.addEventListener('submit', function formSubmitHandler(event) {                                                //событие на сабмит формы
+      event.preventDefault();                                                                               //пропускает отправку и продолжает выполнть следующий код
+
+      useApi.deleteCardsSRV(evnetClickIcon.target.closest('.places__card').getAttribute('id'))                              //отправит запрос на удаление карточик
+        .then(() => {
           evnetClickIcon.target.closest('.places__card').remove();
           popupConfirmDelete.closePopup();
         })
         .catch((error) => {
           console.log('Ошибка удаления карточки: ' + error);
-        });
+        })
+        .finally(() => {
+          btnConfirmDelete.removeEventListener('submit', formSubmitHandler);
+
+        })
     });
   }
 });
