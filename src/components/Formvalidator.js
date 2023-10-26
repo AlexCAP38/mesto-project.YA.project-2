@@ -14,7 +14,7 @@ export default class FormValidator {
     this._buttonElement = this._formElement.querySelector(this._selectorList.submitButtonSelector);    //находим кнопку в форме
     this._inputList = Array.from(this._formElement.querySelectorAll(this._selectorList.inputSelector));//ищем все инпуты в форме
 
-    this._toggleButtonState();
+    //this._toggleButtonState();
 
     this._inputList.forEach((element) => {                                                //обойдет все инпуты из массива
       element.addEventListener('input', () => {                                           //Событие по вводу
@@ -58,8 +58,8 @@ export default class FormValidator {
   }
 
   _hasInvalidInput() {                                                                     //Проверит инпуты в форме на валидность, функция принимает аргумент список инпутов ввиде массива
-
     return this._inputList.some((elm) => {                                                 //если все инпунты валидны, вернется true
+      console.log(elm.validity.valid)
       return !elm.validity.valid;                                                         //возвращает свойство элемента valid
     });
   }

@@ -13,11 +13,11 @@ export default class Card {
     return this._selector.content.querySelector('.places__card').cloneNode(true);
   }
 
-  _deleteMyCard(getObjcard, newCard) {//удаление своей карточки
-    this._trashLikeIcon = newCard.querySelector('.places__trash-icon');                         //найти элемент "иконка корзина"
+  _deleteMyCard(getObjcard) {                                                                 //показывает иконку для удаление своей карточки
+   // this._trashIcon = newCard.querySelector('.places__trash-icon');                         //найти иконку "иконка корзина"
     if (getObjcard.owner._id === this._userID.id) {                                             //если полученный id карточки равен моему, дать возможность удалять
-      this._trashLikeIcon.classList.remove('places__trash-icon_disable');                       //удалит класс скрывающий кнопку
-      this._setEventListeners();
+      this._trashIcon.classList.remove('places__trash-icon_disable');                       //удалит класс скрывающий кнопку
+      //this._setEventListeners();
     }
   }
 
@@ -58,7 +58,7 @@ export default class Card {
       });
   }
 
-  _setEventListeners = () => {
+  _setEventListeners () {
     this._placesLikeIcon.addEventListener('click', (event) => {
       if (event.target.classList.contains('places__like-icon_active')) {               //Если иконка содержит класс (активная)
         this._deleteLikeSRV(event.target);                          //вызвать метод удаления лайка
@@ -73,7 +73,7 @@ export default class Card {
       this._handleCardClick(this._urlImage, this._titleImage);                         //при нажание на картинку вызываем функцию открытия попапа
     });
 
-    this._trashLikeIcon.addEventListener('click', (event) => {                                      //событие по клику Удаление карточки
+    this._trashIcon.addEventListener('click', (event) =>{                                      //событие по клику Удаление карточки
       this._deleteCard(event);                                                   //показать попап подтверждения удаления => удалить карточку
     });
   }
@@ -84,6 +84,7 @@ export default class Card {
     this._placesImage = this._cardElement.querySelector('.places__image');                    //найти шаблоне "фотографию"
     this._likeCounter = this._cardElement.querySelector('.places__like-counter');             //найти шаблоне "счетчик лайков"
     this._placeTitle = this._cardElement.querySelector('.places__title');                     //найти шаблоне "название"
+    this._trashIcon = this._cardElement.querySelector('.places__trash-icon');                         //найти иконку "иконка корзина"
 
     this._placeTitle.textContent = getObjcard.name;                                           //присваиваем значения из инпутов в карточку
     this._placesImage.src = getObjcard.link;

@@ -8,6 +8,7 @@ export default class Popup {
     this._popup.classList.add('popup_opened');                                                            //открываем попап
 
     document.addEventListener('keydown', this._handleEscClose.bind(this));                                //Устанавливаем слушатель на весь документ. отслеживаем нажатие клавиш.
+    this._popup.addEventListener('click', this._handlePopupClose.bind(this));                       //Устанавливаем слушатель на клик мыши на всю форму модального окна
 
     //  this._popup.addEventListener('click', () => { this.setEventListeners(event) });                       //Устанавливаем слушатель на клик мыши на всю форму модального окна
 
@@ -19,11 +20,11 @@ export default class Popup {
 
     document.removeEventListener('keydown', this._handleEscClose.bind(this));                             //Удалить событие нажатия клавиши
 
-    this._popup.removeEventListener('click', () => { this.setEventListeners(event) });                    //Удалить событие клик
+    this._popup.removeEventListener('click', this._handlePopupClose.bind(this));                    //Удалить событие клик
   }
 
   setEventListeners() {
-    this._popup.addEventListener('click', () => { this._handlePopupClose(event) });                       //Устанавливаем слушатель на клик мыши на всю форму модального окна
+
   }
 
   _handlePopupClose(event) {                                                                              //Функция клика мыши

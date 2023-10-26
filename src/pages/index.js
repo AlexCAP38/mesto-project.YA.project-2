@@ -36,9 +36,8 @@ const createCard = new Card(templateCard, {
   deletelikeSRV: (placesLikeIcon) => { return useApi.deletelikeSRV(placesLikeIcon) },
   sendlikeSRV: (placesLikeIcon) => { return useApi.sendlikeSRV(placesLikeIcon) },
   handleCardClick: (url, name) => { showImage.open(url, name) },
-  deleteCard: (evnetClickIcon) => {
-    popupConfirmDelete._cbApi(evnetClickIcon);
-    popupConfirmDelete.openPopup(); popupConfirmDelete.setEventListeners();
+  deleteCard: (evnetClickTrashIcon) => {
+    popupConfirmDelete._cbApi(evnetClickTrashIcon);
   }
 });
 
@@ -187,6 +186,8 @@ profileAddButton.addEventListener('click', () => {                              
 const popupConfirmDelete = new PopupWithForm('#popup-confirm-delete-card', {
   cbApi: (evnetClickIcon) => {
 
+    popupConfirmDelete.openPopup();
+    //popupConfirmDelete.setEventListeners();
     const btnConfirmDelete = document.forms['popup__form-confirm-delete-card'];                             //найтдет форму
 
     btnConfirmDelete.addEventListener('submit', function formSubmitHandler(event) {                                                //событие на сабмит формы
