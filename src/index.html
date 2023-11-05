@@ -54,8 +54,8 @@
         <input class=" popup__input" type="text" id="popup__input-about" name="popup__input-about" placeholder="О себе"
           required minlength="2" maxlength="200" pattern="[A-Za-zА-Яа-яЁё\s\-]{1,200}" data-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__errorMessange" id="popup__input-about-error">Error.</span>
-        <button class="popup__button popup__button_active" type="submit"
-          aria-label="Сохранить отредактированную форму профиля." disabled>Сохранить</button>
+        <button class="popup__button" type="submit"
+          aria-label="Сохранить отредактированную форму профиля.">Сохранить</button>
       </form>
     </div>
   </div>
@@ -73,11 +73,11 @@
         <input class="popup__input" type="url" id="popup__input-link" name="popup__input-link"
           placeholder="Ссылка на картинку" required data-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__errorMessange" id="popup__input-link-error">Введите адрес сайта.</span>
-        <button class="popup__button popup__button_active" type="submit" aria-label="Добавить новую карточку" disabled>Создать</button>
+        <button class="popup__button" type="submit" aria-label="Добавить новую карточку">Создать</button>
       </form>
     </div>
   </div>
-
+  <!-- popup__button_active -->
   <!-- модальное окно для обновления аватарки -->
   <div class="popup" id="popup-edit-avatar">
     <button type="button" class="popup__close" aria-label="Закрыть форму редактирования профиля."></button>
@@ -87,7 +87,7 @@
         <input class="popup__input" type="url" id="popup__input-link" name="popup__input-link"
           placeholder="Ссылка на картинку" required data-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__errorMessange" id="popup__input-link-error">Введите адрес сайта.</span>
-        <button class="popup__button popup__button_active" type="submit" aria-label="Обновить аватар" disabled>Сохранить</button>
+        <button class="popup__button" type="submit" aria-label="Обновить аватар">Сохранить</button>
       </form>
     </div>
   </div>

@@ -35,9 +35,7 @@ export default class Card {
     this.deleteLikeSRV(placesLikeIcon.closest('.places__card').id)
       .then((answer) => {
         placesLikeIcon.classList.remove('places__like-icon_active');
-        placesLikeIcon.closest('.places__card')
-          .querySelector('.places__like-counter')
-          .textContent = answer.likes.length;                                                    //установить счетчик лайков из ответа
+        this._likeCounter.textContent = answer.likes.length;                                                    //установить счетчик лайков из ответа
       })
       .catch((error) => {
         console.log('Ошибка удаления лайка: ' + error);
@@ -49,9 +47,7 @@ export default class Card {
     this.sendlikeSRV(placesLikeIcon.closest('.places__card').id)
       .then((answer) => {                                                                         //добавил иконку на серве и ативиурем лайк
         placesLikeIcon.classList.add('places__like-icon_active');
-        placesLikeIcon.closest('.places__card')
-          .querySelector('.places__like-counter')
-          .textContent = answer.likes.length;                                                           //установить счетчик лайков из ответа
+        this._likeCounter.textContent = answer.likes.length;                                                           //установить счетчик лайков из ответа
       })
       .catch((error) => {
         console.log('Ошибка добавления лайка: ' + error);

@@ -14,13 +14,13 @@ export default class Api {
       })
   }
   //===========================================================================================
-  sendUserProfile = (nameInputValue, jobInputValue) => {          //Отправка информации на сервере из профиля
+  sendUserProfile = (object) => {          //Отправка информации на сервере из профиля
     return fetch(`${this._baseUrl}/users/me`, {                                 //вернуть результат запроса
       method: 'PATCH',
       headers: this._header,
       body: JSON.stringify({
-        name: nameInputValue,
-        about: jobInputValue
+        name: object['popup__input-name'],
+        about: object['popup__input-about']
       })
     })
       .then((response) => {                                         //получили обвет об отправке
@@ -37,13 +37,13 @@ export default class Api {
       })
   }
 
-  sendCardsSRV = (imageName, imageLink) => {                         //Отправка карточки на сервер
+  sendCardsSRV = (object) => {                         //Отправка карточки на сервер
     return fetch(`${this._baseUrl}/cards`, {                                   //вернуть результат запроса
       method: 'POST',
       headers: this._header,
       body: JSON.stringify({
-        name: imageName,
-        link: imageLink
+        name: object['popup__input-name'],
+        link: object['popup__input-link'],
       })
     })
       .then((response) => {                                           //получили ответ об отправке
@@ -81,12 +81,12 @@ export default class Api {
       })
   }
   //===========================================================================================
-  sendAvatar = (input) => {                                           //отправка запроса на обновления аватарки
+  sendAvatar = (object) => {                                           //отправка запроса на обновления аватарки
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._header,
       body: JSON.stringify({
-        avatar: input.value
+        avatar: object['popup__input-link']
       })
     })
       .then((response) => {                                           //получили ответ об отправке
@@ -95,6 +95,7 @@ export default class Api {
   }
   //===========================================================================================
   _checkAnswer = (response) => {                                     //проверка ответа
+
     if (!response.ok) {                                              //если статус true тогда
       return response.json()
         .then(err => {
