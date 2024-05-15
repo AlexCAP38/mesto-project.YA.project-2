@@ -16,13 +16,13 @@
 Grid layout, Flexbox, медиа запросы.
 Графический редактором Figma
 Подбор шрифтов и конвертация их из ttf в woff.
-Использовал новое CSS свойство text-overflow (опредеgit switляет как будет обрезаться текст, если он не влезает в доступную область полностью)
+Использовал новое CSS свойство text-overflow (определяет как будет обрезаться текст, если он не влезает в доступную область полностью)
 Git. Созданы три ветки: main, develop, features
 Webpack
+Асинхронные функции (fetch запросы)
 
 ## Планы по доработке:
 
-
 ## Cсылка на Github pages:
 
-https://alexcap38.github.io/mesto-project/
+https://alexcap38.github.io/mesto-project.YA.project-2/
